@@ -1,6 +1,8 @@
 package com.toy.shopwebflux.role.service;
 
+import com.toy.shopwebflux.role.domain.Role;
 import com.toy.shopwebflux.role.dto.RoleResponse;
+import com.toy.shopwebflux.role.dto.RoleSaveRequest;
 import com.toy.shopwebflux.role.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,13 @@ public class RoleService {
 
     public Mono<RoleResponse> findById(String id) {
         return roleRepository.findById(id)
+                .map(RoleResponse::new);
+    }
+
+    public Mono<RoleResponse> save(RoleSaveRequest roleSaveRequest) {
+        Role role = Role.createRole(roleSaveRequest);
+
+        return roleRepository.save(role)
                 .map(RoleResponse::new);
     }
 }

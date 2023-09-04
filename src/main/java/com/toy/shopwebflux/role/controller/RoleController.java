@@ -2,17 +2,17 @@ package com.toy.shopwebflux.role.controller;
 
 import com.toy.shopwebflux.common.ApiResponse;
 import com.toy.shopwebflux.role.dto.RoleResponse;
+import com.toy.shopwebflux.role.dto.RoleSaveRequest;
 import com.toy.shopwebflux.role.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("roles")
 @RequiredArgsConstructor
@@ -30,6 +30,12 @@ public class RoleController {
     @GetMapping("{id}")
     public Mono<ResponseEntity<ApiResponse<RoleResponse>>> role(@PathVariable String id) {
         return roleService.findById(id)
+                .map(roleResponse -> ResponseEntity.ok(new ApiResponse<>(roleResponse)));
+    }
+
+    @PostMapping
+    public Mono<ResponseEntity<ApiResponse<RoleResponse>>> saveRole(@RequestBody RoleSaveRequest roleSaveRequest) {
+        return roleService.save(roleSaveRequest)
                 .map(roleResponse -> ResponseEntity.ok(new ApiResponse<>(roleResponse)));
     }
 }
