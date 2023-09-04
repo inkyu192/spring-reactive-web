@@ -38,4 +38,9 @@ public class RoleController {
         return roleService.save(roleSaveRequest)
                 .map(roleResponse -> ResponseEntity.ok(new ApiResponse<>(roleResponse)));
     }
+
+    @DeleteMapping("{id}")
+    public Mono<Void> deleteRole(@PathVariable String id) {
+        return roleService.delete(id);
+    }
 }

@@ -31,4 +31,8 @@ public class RoleService {
         return roleRepository.save(role)
                 .map(RoleResponse::new);
     }
+
+    public Mono<Void> delete(String id) {
+        return roleRepository.deleteById(id);
+    }
 }
