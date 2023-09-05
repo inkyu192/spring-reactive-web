@@ -3,6 +3,8 @@ package com.toy.shopwebflux.common;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
+import static com.toy.shopwebflux.common.ApiResponseCode.OK;
+
 @Getter
 public class ApiResponse<T> {
 
@@ -12,14 +14,14 @@ public class ApiResponse<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
+    public ApiResponse() {
+        this.code = OK.getCode();
+        this.message = OK.getMessage();
+    }
+
     public ApiResponse(T data) {
-        if (data == null) {
-            this.code = "500";
-            this.message = "실패";
-        } else {
-            this.code = "200";
-            this.message = "성공";
-            this.data = data;
-        }
+        this.code = OK.getCode();
+        this.message = OK.getMessage();
+        this.data = data;
     }
 }
