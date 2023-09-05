@@ -37,7 +37,8 @@ public class RoleController {
     }
 
     @DeleteMapping("{id}")
-    public Mono<Void> deleteRole(@PathVariable String id) {
-        return roleService.delete(id);
+    public Mono<ApiResponse<Void>> deleteRole(@PathVariable String id) {
+        return roleService.delete(id)
+                .thenReturn(new ApiResponse<>());
     }
 }
