@@ -18,8 +18,8 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
-    public Mono<ApiResponse<List<RoleResponse>>> roles() {
-        return roleService.findAll()
+    public Mono<ApiResponse<List<RoleResponse>>> roles(@RequestParam(required = false) String name) {
+        return roleService.findAll(name)
                 .collectList()
                 .map(ApiResponse::new);
     }

@@ -3,11 +3,14 @@ package com.toy.shopwebflux.role.service;
 import com.toy.shopwebflux.role.domain.Role;
 import com.toy.shopwebflux.role.dto.RoleResponse;
 import com.toy.shopwebflux.role.dto.RoleSaveRequest;
+import com.toy.shopwebflux.role.dto.RoleUpdateRequest;
 import com.toy.shopwebflux.role.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,8 +18,8 @@ public class RoleService {
 
     private final RoleRepository roleRepository;
 
-    public Flux<RoleResponse> findAll() {
-        return roleRepository.findAll()
+    public Flux<RoleResponse> findAll(String name) {
+        return roleRepository.findAll(name)
                 .map(RoleResponse::new);
     }
 
