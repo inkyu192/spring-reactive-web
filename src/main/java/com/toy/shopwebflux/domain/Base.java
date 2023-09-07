@@ -1,4 +1,4 @@
-package com.toy.shopwebflux.role.domain;
+package com.toy.shopwebflux.domain;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -7,7 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Getter
-public class Common {
+public class Base {
 
     @CreatedDate
     private LocalDateTime createdDate;

@@ -1,9 +1,10 @@
-package com.toy.shopwebflux.role.controller;
+package com.toy.shopwebflux.controller;
 
 import com.toy.shopwebflux.common.ApiResponse;
-import com.toy.shopwebflux.role.dto.RoleResponse;
-import com.toy.shopwebflux.role.dto.RoleSaveRequest;
-import com.toy.shopwebflux.role.service.RoleService;
+import com.toy.shopwebflux.dto.role.RoleResponse;
+import com.toy.shopwebflux.dto.role.RoleSaveRequest;
+import com.toy.shopwebflux.dto.role.RoleUpdateRequest;
+import com.toy.shopwebflux.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -33,6 +34,12 @@ public class RoleController {
     @PostMapping
     public Mono<ApiResponse<RoleResponse>> saveRole(@RequestBody RoleSaveRequest roleSaveRequest) {
         return roleService.save(roleSaveRequest)
+                .map(ApiResponse::new);
+    }
+
+    @PutMapping("{id}")
+    public Mono<ApiResponse<RoleResponse>> updateRole(@PathVariable String id, @RequestBody RoleUpdateRequest roleUpdateRequest) {
+        return roleService.update(id, roleUpdateRequest)
                 .map(ApiResponse::new);
     }
 

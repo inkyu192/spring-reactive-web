@@ -1,6 +1,6 @@
-package com.toy.shopwebflux.role.dto;
+package com.toy.shopwebflux.dto.role;
 
-import com.toy.shopwebflux.role.domain.Role;
+import com.toy.shopwebflux.domain.Role;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
