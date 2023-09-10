@@ -1,18 +1,18 @@
 package com.toy.shopwebflux.service;
 
+import com.toy.shopwebflux.common.ApiResponseCode;
+import com.toy.shopwebflux.common.CommonException;
 import com.toy.shopwebflux.domain.Role;
 import com.toy.shopwebflux.dto.role.RoleResponse;
 import com.toy.shopwebflux.dto.role.RoleSaveRequest;
 import com.toy.shopwebflux.dto.role.RoleUpdateRequest;
 import com.toy.shopwebflux.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RoleService {
@@ -26,7 +26,8 @@ public class RoleService {
 
     public Mono<RoleResponse> findById(String id) {
         return roleRepository.findById(id)
-                .map(RoleResponse::new);
+                .map(RoleResponse::new)
+                .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.DATA_NOT_FOUND)));
     }
 
     @Transactional
