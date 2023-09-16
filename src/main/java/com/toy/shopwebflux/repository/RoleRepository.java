@@ -9,9 +9,9 @@ import reactor.core.publisher.Flux;
 public interface RoleRepository extends R2dbcRepository<Role, String> {
 
     @Query(
-        "select r.*" +
-        " from Role r" +
-        " where (:name is null or r.name like concat('%', :name, '%'))"
+        "select r.* " +
+        "from Role r " +
+        "where (:name is null or r.name like concat('%', :name, '%'))"
     )
     Flux<Role> findAll(@Param("name") String name);
 }
