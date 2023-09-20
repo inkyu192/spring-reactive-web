@@ -2,6 +2,7 @@ package com.toy.shopwebflux.domain;
 
 import com.toy.shopwebflux.dto.role.RoleSaveRequest;
 import com.toy.shopwebflux.dto.role.RoleUpdateRequest;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
@@ -9,6 +10,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
+@Builder
 @Table
 public class Role extends Base implements Persistable<String> {
 
@@ -19,13 +21,11 @@ public class Role extends Base implements Persistable<String> {
     private String description;
 
     public static Role createRole(RoleSaveRequest roleSaveRequest) {
-        Role role = new Role();
-
-        role.id = roleSaveRequest.getRoleId();
-        role.name = roleSaveRequest.getName();
-        role.description = roleSaveRequest.getDescription();
-
-        return role;
+        return Role.builder()
+                .id(roleSaveRequest.getRoleId())
+                .name(roleSaveRequest.getName())
+                .description(roleSaveRequest.getDescription())
+                .build();
     }
 
     public Role updateRole(RoleUpdateRequest roleUpdateRequest) {

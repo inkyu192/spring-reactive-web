@@ -1,6 +1,7 @@
 package com.toy.shopwebflux.domain;
 
 import com.toy.shopwebflux.dto.member.MemberSaveRequest;
+import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
@@ -8,6 +9,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
+@Builder
 @Table
 public class Member extends Base implements Persistable<Long> {
 
@@ -23,18 +25,16 @@ public class Member extends Base implements Persistable<Long> {
     private String zipcode;
 
     public static Member createMember(Long id, MemberSaveRequest memberSaveRequest) {
-        Member member = new Member();
-
-        member.id = id;
-        member.account = memberSaveRequest.getAccount();
-        member.password = memberSaveRequest.getPassword();
-        member.name = memberSaveRequest.getName();
-        member.roleId = memberSaveRequest.getRoleId();
-        member.city = memberSaveRequest.getCity();
-        member.street = memberSaveRequest.getStreet();
-        member.zipcode = memberSaveRequest.getZipcode();
-
-        return member;
+        return Member.builder()
+                .id(id)
+                .account(memberSaveRequest.getAccount())
+                .password(memberSaveRequest.getPassword())
+                .name(memberSaveRequest.getName())
+                .roleId(memberSaveRequest.getRoleId())
+                .city(memberSaveRequest.getCity())
+                .street(memberSaveRequest.getStreet())
+                .zipcode(memberSaveRequest.getStreet())
+                .build();
     }
 
     @Override
