@@ -20,6 +20,8 @@ public class ControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     public Mono<ApiResponse<Void>> exceptionHandler(Exception e) {
+        log.error("exceptionHandler: {}", e.getMessage(), e);
+
         return Mono.just(new ApiResponse<>(INTERNAL_SERVER_ERROR.getCode(), INTERNAL_SERVER_ERROR.getMessage()));
     }
 }
