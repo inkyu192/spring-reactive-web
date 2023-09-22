@@ -24,6 +24,12 @@ public class MemberController {
                 .map(ApiResponse::new);
     }
 
+    @GetMapping("{id}")
+    public Mono<ApiResponse<MemberResponse>> member(@PathVariable Long id) {
+        return memberService.findById(id)
+                .map(ApiResponse::new);
+    }
+
     @PostMapping
     public Mono<ApiResponse<MemberResponse>> saveMember(@RequestBody MemberSaveRequest memberSaveRequest) {
         return memberService.save(memberSaveRequest)

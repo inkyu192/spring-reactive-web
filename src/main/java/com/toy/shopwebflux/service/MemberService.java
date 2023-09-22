@@ -1,5 +1,7 @@
 package com.toy.shopwebflux.service;
 
+import com.toy.shopwebflux.common.ApiResponseCode;
+import com.toy.shopwebflux.common.CommonException;
 import com.toy.shopwebflux.domain.Member;
 import com.toy.shopwebflux.dto.member.MemberResponse;
 import com.toy.shopwebflux.dto.member.MemberSaveRequest;
@@ -20,6 +22,12 @@ public class MemberService {
     public Flux<MemberResponse> findAll(String name) {
         return memberRepository.findAll(name)
                 .map(MemberResponse::new);
+    }
+
+    public Mono<MemberResponse> findById(Long id) {
+        return memberRepository.findById(id)
+                .map(MemberResponse::new)
+                .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.DATA_NOT_FOUND)));
     }
 
     @Transactional
