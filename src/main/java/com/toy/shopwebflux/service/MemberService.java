@@ -5,6 +5,7 @@ import com.toy.shopwebflux.common.CommonException;
 import com.toy.shopwebflux.domain.Member;
 import com.toy.shopwebflux.dto.member.MemberResponse;
 import com.toy.shopwebflux.dto.member.MemberSaveRequest;
+import com.toy.shopwebflux.dto.member.MemberUpdateRequest;
 import com.toy.shopwebflux.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,17 @@ public class MemberService {
         return memberRepository.findMaxMemberId()
                 .defaultIfEmpty(1L)
                 .flatMap(memberId -> memberRepository.save(Member.createMember(memberId + 1, memberSaveRequest)))
+                .map(MemberResponse::new);
+    }
+
+    @Transactional
+    public Mono<MemberResponse> update(Long id, MemberUpdateRequest memberUpdateRequest) {
+        return memberRepository.findById(id)
+                .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.DATA_NOT_FOUND)))
+                .flatMap(member -> {
+                    member.updateMember(memberUpdateRequest);
+                    return memberRepository.save(member);
+                })
                 .map(MemberResponse::new);
     }
 }

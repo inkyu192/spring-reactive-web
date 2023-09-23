@@ -3,6 +3,7 @@ package com.toy.shopwebflux.controller;
 import com.toy.shopwebflux.common.ApiResponse;
 import com.toy.shopwebflux.dto.member.MemberResponse;
 import com.toy.shopwebflux.dto.member.MemberSaveRequest;
+import com.toy.shopwebflux.dto.member.MemberUpdateRequest;
 import com.toy.shopwebflux.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,13 @@ public class MemberController {
     @PostMapping
     public Mono<ApiResponse<MemberResponse>> saveMember(@RequestBody MemberSaveRequest memberSaveRequest) {
         return memberService.save(memberSaveRequest)
+                .map(ApiResponse::new);
+    }
+
+    @PutMapping("{id}")
+    public Mono<ApiResponse<MemberResponse>> updateMember(@PathVariable Long id,
+                                                          @RequestBody MemberUpdateRequest memberUpdateRequest) {
+        return memberService.update(id, memberUpdateRequest)
                 .map(ApiResponse::new);
     }
 }
