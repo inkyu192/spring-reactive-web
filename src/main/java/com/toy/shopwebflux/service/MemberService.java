@@ -49,4 +49,9 @@ public class MemberService {
                 })
                 .map(MemberResponse::new);
     }
+
+    @Transactional
+    public Mono<Void> delete(Long id) {
+        return memberRepository.deleteById(id);
+    }
 }

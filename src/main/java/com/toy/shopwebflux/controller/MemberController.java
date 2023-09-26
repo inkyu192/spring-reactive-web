@@ -43,4 +43,10 @@ public class MemberController {
         return memberService.update(id, memberUpdateRequest)
                 .map(ApiResponse::new);
     }
+
+    @DeleteMapping("{id}")
+    public Mono<ApiResponse<Void>> deleteMember(@PathVariable Long id) {
+        return memberService.delete(id)
+                .thenReturn(new ApiResponse<>());
+    }
 }
