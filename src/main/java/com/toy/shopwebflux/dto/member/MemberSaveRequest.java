@@ -1,5 +1,6 @@
 package com.toy.shopwebflux.dto.member;
 
+import com.toy.shopwebflux.constant.Role;
 import lombok.Getter;
 
 @Getter
@@ -8,7 +9,7 @@ public class MemberSaveRequest {
     String account;
     String password;
     String name;
-    String roleId;
+    Role role;
     String city;
     String street;
     String zipcode;

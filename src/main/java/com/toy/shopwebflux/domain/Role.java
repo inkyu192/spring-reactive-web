@@ -20,6 +20,11 @@ public class Role extends Base implements Persistable<String> {
     private String name;
     private String description;
 
+    @Override
+    public boolean isNew() {
+        return getCreatedDate() == null;
+    }
+
     public static Role createRole(RoleSaveRequest roleSaveRequest) {
         return Role.builder()
                 .id(roleSaveRequest.getRoleId())
@@ -33,10 +38,5 @@ public class Role extends Base implements Persistable<String> {
         this.description = roleUpdateRequest.getDescription();
 
         return this;
-    }
-
-    @Override
-    public boolean isNew() {
-        return getCreatedDate() == null;
     }
 }

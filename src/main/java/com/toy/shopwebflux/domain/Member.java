@@ -1,5 +1,6 @@
 package com.toy.shopwebflux.domain;
 
+import com.toy.shopwebflux.constant.Role;
 import com.toy.shopwebflux.dto.member.MemberSaveRequest;
 import com.toy.shopwebflux.dto.member.MemberUpdateRequest;
 import lombok.Builder;
@@ -21,7 +22,7 @@ public class Member extends Base implements Persistable<Long> {
     private String account;
     private String password;
     private String name;
-    private String roleId;
+    private Role role;
     private String city;
     private String street;
     private String zipcode;
@@ -37,7 +38,7 @@ public class Member extends Base implements Persistable<Long> {
                 .account(memberSaveRequest.getAccount())
                 .password(memberSaveRequest.getPassword())
                 .name(memberSaveRequest.getName())
-                .roleId(memberSaveRequest.getRoleId())
+                .role(memberSaveRequest.getRole())
                 .city(memberSaveRequest.getCity())
                 .street(memberSaveRequest.getStreet())
                 .zipcode(memberSaveRequest.getStreet())
@@ -47,7 +48,7 @@ public class Member extends Base implements Persistable<Long> {
     public void updateMember(MemberUpdateRequest memberUpdateRequest) {
         this.password = memberUpdateRequest.getPassword();
         this.name = memberUpdateRequest.getName();
-        this.roleId = memberUpdateRequest.getRoleId();
+        this.role = memberUpdateRequest.getRole();
         this.city = memberUpdateRequest.getCity();
         this.street = memberUpdateRequest.getStreet();
         this.zipcode = memberUpdateRequest.getZipcode();
