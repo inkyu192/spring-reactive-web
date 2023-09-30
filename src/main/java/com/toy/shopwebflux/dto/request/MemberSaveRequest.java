@@ -1,4 +1,4 @@
-package com.toy.shopwebflux.dto.member;
+package com.toy.shopwebflux.dto.request;
 
 import com.toy.shopwebflux.constant.Role;
 import lombok.Getter;

@@ -1,9 +1,9 @@
 package com.toy.shopwebflux.controller;
 
 import com.toy.shopwebflux.common.ApiResponse;
-import com.toy.shopwebflux.dto.member.MemberResponse;
-import com.toy.shopwebflux.dto.member.MemberSaveRequest;
-import com.toy.shopwebflux.dto.member.MemberUpdateRequest;
+import com.toy.shopwebflux.dto.response.MemberResponse;
+import com.toy.shopwebflux.dto.request.MemberSaveRequest;
+import com.toy.shopwebflux.dto.request.MemberUpdateRequest;
 import com.toy.shopwebflux.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

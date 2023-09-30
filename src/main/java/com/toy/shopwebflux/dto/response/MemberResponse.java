@@ -1,4 +1,4 @@
-package com.toy.shopwebflux.dto.member;
+package com.toy.shopwebflux.dto.response;
 
 import com.toy.shopwebflux.constant.Role;
 import com.toy.shopwebflux.domain.Member;
