@@ -1,11 +1,13 @@
-package com.toy.shopwebflux.common;
+package com.toy.shopwebflux.exception;
 
+import com.toy.shopwebflux.constant.ApiResponseCode;
+import com.toy.shopwebflux.dto.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import reactor.core.publisher.Mono;
 
-import static com.toy.shopwebflux.common.ApiResponseCode.*;
+import static com.toy.shopwebflux.constant.ApiResponseCode.*;
 
 
 @Slf4j

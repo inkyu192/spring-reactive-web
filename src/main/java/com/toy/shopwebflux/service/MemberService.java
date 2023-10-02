@@ -1,7 +1,7 @@
 package com.toy.shopwebflux.service;
 
-import com.toy.shopwebflux.common.ApiResponseCode;
-import com.toy.shopwebflux.common.CommonException;
+import com.toy.shopwebflux.constant.ApiResponseCode;
+import com.toy.shopwebflux.exception.CommonException;
 import com.toy.shopwebflux.domain.Member;
 import com.toy.shopwebflux.dto.response.MemberResponse;
 import com.toy.shopwebflux.dto.request.MemberSaveRequest;
@@ -52,6 +52,8 @@ public class MemberService {
 
     @Transactional
     public Mono<Void> delete(Long id) {
-        return memberRepository.deleteById(id);
+        return memberRepository.findById(id)
+                .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.DATA_NOT_FOUND)))
+                .flatMap(memberRepository::delete);
     }
 }

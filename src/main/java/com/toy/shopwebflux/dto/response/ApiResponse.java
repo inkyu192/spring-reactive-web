@@ -1,9 +1,9 @@
-package com.toy.shopwebflux.common;
+package com.toy.shopwebflux.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
-import static com.toy.shopwebflux.common.ApiResponseCode.OK;
+import static com.toy.shopwebflux.constant.ApiResponseCode.OK;
 
 @Getter
 public class ApiResponse<T> {

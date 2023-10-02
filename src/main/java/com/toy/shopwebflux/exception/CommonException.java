@@ -1,5 +1,6 @@
-package com.toy.shopwebflux.common;
+package com.toy.shopwebflux.exception;
 
+import com.toy.shopwebflux.constant.ApiResponseCode;
 import lombok.Getter;
 
 @Getter

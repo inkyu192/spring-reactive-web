@@ -1,6 +1,6 @@
 package com.toy.shopwebflux.controller;
 
-import com.toy.shopwebflux.common.ApiResponse;
+import com.toy.shopwebflux.dto.response.ApiResponse;
 import com.toy.shopwebflux.dto.response.MemberResponse;
 import com.toy.shopwebflux.dto.request.MemberSaveRequest;
 import com.toy.shopwebflux.dto.request.MemberUpdateRequest;

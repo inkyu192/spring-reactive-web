@@ -1,4 +1,4 @@
-package com.toy.shopwebflux.common;
+package com.toy.shopwebflux.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
