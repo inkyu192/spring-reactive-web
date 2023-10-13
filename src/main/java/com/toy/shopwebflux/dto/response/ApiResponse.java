@@ -19,14 +19,14 @@ public class ApiResponse<T> {
         this.message = OK.getMessage();
     }
 
-    public ApiResponse(String code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
     public ApiResponse(T data) {
         this.code = OK.getCode();
         this.message = OK.getMessage();
         this.data = data;
+    }
+
+    public ApiResponse(String code, String message) {
+        this.code = code;
+        this.message = message;
     }
 }

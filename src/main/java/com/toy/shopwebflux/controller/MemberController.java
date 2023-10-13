@@ -18,28 +18,22 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @PostMapping
+    public Mono<ApiResponse<MemberResponse>> saveMember(@RequestBody MemberSaveRequest memberSaveRequest) {
+        return memberService.save(memberSaveRequest)
+                .map(ApiResponse::new);
+    }
+
     @GetMapping
-    public Mono<ApiResponse<List<MemberResponse>>> member(
-            @RequestParam(required = false) String name
-    ) {
+    public Mono<ApiResponse<List<MemberResponse>>> member(@RequestParam(required = false) String name) {
         return memberService.findAll(name)
                 .collectList()
                 .map(ApiResponse::new);
     }
 
     @GetMapping("{id}")
-    public Mono<ApiResponse<MemberResponse>> member(
-            @PathVariable Long id
-    ) {
+    public Mono<ApiResponse<MemberResponse>> member(@PathVariable Long id) {
         return memberService.findById(id)
-                .map(ApiResponse::new);
-    }
-
-    @PostMapping
-    public Mono<ApiResponse<MemberResponse>> saveMember(
-            @RequestBody MemberSaveRequest memberSaveRequest
-    ) {
-        return memberService.save(memberSaveRequest)
                 .map(ApiResponse::new);
     }
 
@@ -53,9 +47,7 @@ public class MemberController {
     }
 
     @DeleteMapping("{id}")
-    public Mono<ApiResponse<Void>> deleteMember(
-            @PathVariable Long id
-    ) {
+    public Mono<ApiResponse<Void>> deleteMember(@PathVariable Long id) {
         return memberService.delete(id)
                 .thenReturn(new ApiResponse<>());
     }
