@@ -7,6 +7,7 @@ import com.toy.shopwebflux.dto.response.MemberResponse;
 import com.toy.shopwebflux.exception.CommonException;
 import com.toy.shopwebflux.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -21,28 +22,27 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Flux<MemberResponse> findAll(String name) {
-        return memberRepository.findAllWithDatabaseClient(name)
-//        return memberRepository.findAll(name)
-                .map(MemberResponse::new);
-    }
-
-    public Mono<MemberResponse> findById(Long id) {
-        return memberRepository.findById(id)
-                .map(MemberResponse::new)
-                .switchIfEmpty(Mono.error(new CommonException(DATA_NOT_FOUND)));
-    }
-
     @Transactional
-    public Mono<MemberResponse> save(MemberSaveRequest memberSaveRequest) {
+    public Mono<MemberResponse> saveMember(MemberSaveRequest memberSaveRequest) {
         return memberRepository.findMaxMemberId()
                 .defaultIfEmpty(1L)
                 .flatMap(memberId -> memberRepository.save(Member.createMember(memberId + 1, memberSaveRequest)))
                 .map(MemberResponse::new);
     }
 
+    public Flux<MemberResponse> findMembers(Pageable pageable, String account, String name) {
+        return memberRepository.findAll(pageable.getOffset(), pageable.getPageSize(), account, name)
+                .map(MemberResponse::new);
+    }
+
+    public Mono<MemberResponse> findMember(Long id) {
+        return memberRepository.findById(id)
+                .map(MemberResponse::new)
+                .switchIfEmpty(Mono.error(new CommonException(DATA_NOT_FOUND)));
+    }
+
     @Transactional
-    public Mono<MemberResponse> update(Long id, MemberUpdateRequest memberUpdateRequest) {
+    public Mono<MemberResponse> updateMember(Long id, MemberUpdateRequest memberUpdateRequest) {
         return memberRepository.findById(id)
                 .switchIfEmpty(Mono.error(new CommonException(DATA_NOT_FOUND)))
                 .flatMap(member -> {
@@ -53,7 +53,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Mono<Void> delete(Long id) {
+    public Mono<Void> deleteMember(Long id) {
         return memberRepository.findById(id)
                 .switchIfEmpty(Mono.error(new CommonException(DATA_NOT_FOUND)))
                 .flatMap(memberRepository::delete);

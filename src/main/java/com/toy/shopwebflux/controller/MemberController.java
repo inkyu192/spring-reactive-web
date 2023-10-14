@@ -1,11 +1,12 @@
 package com.toy.shopwebflux.controller;
 
-import com.toy.shopwebflux.dto.response.ApiResponse;
-import com.toy.shopwebflux.dto.response.MemberResponse;
 import com.toy.shopwebflux.dto.request.MemberSaveRequest;
 import com.toy.shopwebflux.dto.request.MemberUpdateRequest;
+import com.toy.shopwebflux.dto.response.ApiResponse;
+import com.toy.shopwebflux.dto.response.MemberResponse;
 import com.toy.shopwebflux.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -20,20 +21,25 @@ public class MemberController {
 
     @PostMapping
     public Mono<ApiResponse<MemberResponse>> saveMember(@RequestBody MemberSaveRequest memberSaveRequest) {
-        return memberService.save(memberSaveRequest)
+        return memberService.saveMember(memberSaveRequest)
                 .map(ApiResponse::new);
     }
 
     @GetMapping
-    public Mono<ApiResponse<List<MemberResponse>>> member(@RequestParam(required = false) String name) {
-        return memberService.findAll(name)
+    public Mono<ApiResponse<List<MemberResponse>>> fineMembers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String account,
+            @RequestParam(required = false) String name
+    ) {
+        return memberService.findMembers(PageRequest.of(page, size), account, name)
                 .collectList()
                 .map(ApiResponse::new);
     }
 
     @GetMapping("{id}")
-    public Mono<ApiResponse<MemberResponse>> member(@PathVariable Long id) {
-        return memberService.findById(id)
+    public Mono<ApiResponse<MemberResponse>> findMember(@PathVariable Long id) {
+        return memberService.findMember(id)
                 .map(ApiResponse::new);
     }
 
@@ -42,13 +48,13 @@ public class MemberController {
             @PathVariable Long id,
             @RequestBody MemberUpdateRequest memberUpdateRequest
     ) {
-        return memberService.update(id, memberUpdateRequest)
+        return memberService.updateMember(id, memberUpdateRequest)
                 .map(ApiResponse::new);
     }
 
     @DeleteMapping("{id}")
     public Mono<ApiResponse<Void>> deleteMember(@PathVariable Long id) {
-        return memberService.delete(id)
+        return memberService.deleteMember(id)
                 .thenReturn(new ApiResponse<>());
     }
 }

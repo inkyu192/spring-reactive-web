@@ -3,7 +3,6 @@ package com.toy.shopwebflux.domain;
 import com.toy.shopwebflux.constant.Role;
 import com.toy.shopwebflux.dto.request.MemberSaveRequest;
 import com.toy.shopwebflux.dto.request.MemberUpdateRequest;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;

@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,26 +17,22 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
     private final DatabaseClient databaseClient;
 
     @Override
-    public Flux<Member> findAllWithDatabaseClient(String name) {
-        String sql = """
-                SELECT m.* 
-                FROM Member m 
-                """;
+    public Flux<Member> findAllWithDatabaseClient(long offset, int pageSize, String account, String name) {
+        String sql = "SELECT m.* FROM member m";
 
-        ArrayList<String> whereCondition = new ArrayList<>();
+        List<String> whereCondition = new ArrayList<>();
 
-        if (StringUtils.hasText(name)) whereCondition.add("m.name like concat('%', :name, '%')");
+        if (StringUtils.hasText(account)) whereCondition.add("m.account LIKE CONCAT('%', '" + account + "', '%')");
+        if (StringUtils.hasText(name)) whereCondition.add("m.name LIKE CONCAT('%', '" + name + "', '%')");
 
         if (!whereCondition.isEmpty()) {
-            sql += "WHERE ";
-            sql += String.join(" and ", whereCondition);
+            sql += " WHERE ";
+            sql += String.join(" AND ", whereCondition);
         }
 
-        DatabaseClient.GenericExecuteSpec createSql = databaseClient.sql(sql);
+        sql += " LIMIT " + offset + ", " + pageSize;
 
-        if (StringUtils.hasText(name)) createSql.bind("name", name);
-
-        return createSql
+        return databaseClient.sql(sql)
                 .fetch()
                 .all()
                 .map(Member::createMember);

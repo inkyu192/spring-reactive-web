@@ -5,5 +5,5 @@ import reactor.core.publisher.Flux;
 
 public interface MemberCustomRepository {
 
-    Flux<Member> findAllWithDatabaseClient(String name);
+    Flux<Member> findAllWithDatabaseClient(long offset, int pageSize, String account, String name);
 }
