@@ -7,14 +7,17 @@ import com.toy.shopwebflux.dto.response.MemberResponse;
 import com.toy.shopwebflux.exception.CommonException;
 import com.toy.shopwebflux.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static com.toy.shopwebflux.constant.ApiResponseCode.DATA_DUPLICATE;
 import static com.toy.shopwebflux.constant.ApiResponseCode.DATA_NOT_FOUND;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -24,9 +27,18 @@ public class MemberService {
 
     @Transactional
     public Mono<MemberResponse> saveMember(MemberSaveRequest memberSaveRequest) {
-        return memberRepository.findMaxMemberId()
-                .defaultIfEmpty(1L)
-                .flatMap(memberId -> memberRepository.save(Member.createMember(memberId + 1, memberSaveRequest)))
+        return memberRepository.findByAccount(memberSaveRequest.getAccount())
+                .flatMap(member ->
+                        Mono.error(new CommonException(DATA_DUPLICATE))
+                                .thenReturn(member)
+                )
+                .switchIfEmpty(
+                        memberRepository.findMaxMemberId()
+                                .defaultIfEmpty(1L)
+                                .flatMap(memberId ->
+                                        memberRepository.save(Member.createMember(memberId + 1, memberSaveRequest))
+                                )
+                )
                 .map(MemberResponse::new);
     }
 
@@ -37,8 +49,8 @@ public class MemberService {
 
     public Mono<MemberResponse> findMember(Long id) {
         return memberRepository.findById(id)
-                .map(MemberResponse::new)
-                .switchIfEmpty(Mono.error(new CommonException(DATA_NOT_FOUND)));
+                .switchIfEmpty(Mono.error(new CommonException(DATA_NOT_FOUND)))
+                .map(MemberResponse::new);
     }
 
     @Transactional

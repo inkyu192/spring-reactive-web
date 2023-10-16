@@ -11,6 +11,19 @@ import reactor.core.publisher.Mono;
 public interface MemberRepository extends R2dbcRepository<Member, Long>, MemberCustomRepository {
 
     @Query("""
+                SELECT m.*
+                FROM member m
+                WHERE m.account = :account
+            """)
+    Mono<Member> findByAccount(@Param("account") String account);
+
+    @Query("""
+            SELECT MAX(member_id)
+            FROM member m
+            """)
+    Mono<Long> findMaxMemberId();
+
+    @Query("""
                  SELECT m.*
                  FROM member m
                  WHERE (:account IS NULL OR m.account LIKE CONCAT('%', :account, '%'))
@@ -23,10 +36,4 @@ public interface MemberRepository extends R2dbcRepository<Member, Long>, MemberC
             @Param("account") String account,
             @Param("name") String name
     );
-
-    @Query("""
-            SELECT MAX(member_id)
-            FROM member m
-            """)
-    Mono<Long> findMaxMemberId();
 }
