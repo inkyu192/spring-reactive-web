@@ -1,5 +1,6 @@
 package com.toy.shopwebflux.service;
 
+import com.toy.shopwebflux.constant.ApiResponseCode;
 import com.toy.shopwebflux.domain.Member;
 import com.toy.shopwebflux.dto.request.MemberSaveRequest;
 import com.toy.shopwebflux.dto.request.MemberUpdateRequest;
@@ -13,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static com.toy.shopwebflux.constant.ApiResponseCode.DATA_DUPLICATE;
-import static com.toy.shopwebflux.constant.ApiResponseCode.DATA_NOT_FOUND;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,23 +25,26 @@ public class MemberService {
     @Transactional
     public Mono<MemberResponse> saveMember(MemberSaveRequest memberSaveRequest) {
         return memberRepository.findByAccount(memberSaveRequest.getAccount())
-                .flatMap(member ->
-                        Mono.error(new CommonException(DATA_DUPLICATE))
-                                .thenReturn(member)
-                )
-                .switchIfEmpty(
-                        memberRepository.save(
-                                Member.builder()
-                                        .account(memberSaveRequest.getAccount())
-                                        .password(memberSaveRequest.getPassword())
-                                        .name(memberSaveRequest.getName())
-                                        .city(memberSaveRequest.getCity())
-                                        .street(memberSaveRequest.getStreet())
-                                        .zipcode(memberSaveRequest.getZipcode())
-                                        .role(memberSaveRequest.getRole())
-                                        .build()
-                        )
-                )
+                .defaultIfEmpty(Member.builder().build())
+                .flatMap(member -> {
+                    if (member.getId() != null)
+                        return Mono.error(new CommonException(ApiResponseCode.DATA_DUPLICATE));
+
+                    return memberRepository.findMaxMemberId()
+                            .defaultIfEmpty(1L)
+                            .flatMap(id -> memberRepository.save(
+                                    Member.builder()
+                                            .id(id + 1)
+                                            .account(memberSaveRequest.getAccount())
+                                            .password(memberSaveRequest.getPassword())
+                                            .name(memberSaveRequest.getName())
+                                            .city(memberSaveRequest.getCity())
+                                            .street(memberSaveRequest.getStreet())
+                                            .zipcode(memberSaveRequest.getZipcode())
+                                            .role(memberSaveRequest.getRole())
+                                            .build()
+                            ));
+                })
                 .map(member -> MemberResponse.builder()
                         .id(member.getId())
                         .account(member.getAccount())
@@ -69,7 +71,7 @@ public class MemberService {
 
     public Mono<MemberResponse> findMember(Long id) {
         return memberRepository.findById(id)
-                .switchIfEmpty(Mono.error(new CommonException(DATA_NOT_FOUND)))
+                .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.DATA_NOT_FOUND)))
                 .map(member -> MemberResponse.builder()
                         .id(member.getId())
                         .account(member.getAccount())
@@ -84,7 +86,7 @@ public class MemberService {
     @Transactional
     public Mono<MemberResponse> updateMember(Long id, MemberUpdateRequest memberUpdateRequest) {
         return memberRepository.findById(id)
-                .switchIfEmpty(Mono.error(new CommonException(DATA_NOT_FOUND)))
+                .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.DATA_NOT_FOUND)))
                 .flatMap(member -> {
                     member.updateMember(memberUpdateRequest);
                     return memberRepository.save(member);

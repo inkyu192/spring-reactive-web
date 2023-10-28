@@ -30,7 +30,8 @@ public class Member extends Base implements Persistable<Long> {
     }
 
     @Builder
-    public Member(String account, String password, String name, String city, String street, String zipcode, Role role) {
+    public Member(Long id, String account, String password, String name, String city, String street, String zipcode, Role role) {
+        this.id = id;
         this.account = account;
         this.password = password;
         this.name = name;
