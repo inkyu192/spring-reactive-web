@@ -7,7 +7,6 @@ import com.toy.shopwebflux.dto.response.MemberResponse;
 import com.toy.shopwebflux.exception.CommonException;
 import com.toy.shopwebflux.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,6 @@ import reactor.core.publisher.Mono;
 import static com.toy.shopwebflux.constant.ApiResponseCode.DATA_DUPLICATE;
 import static com.toy.shopwebflux.constant.ApiResponseCode.DATA_NOT_FOUND;
 
-@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -33,24 +31,54 @@ public class MemberService {
                                 .thenReturn(member)
                 )
                 .switchIfEmpty(
-                        memberRepository.findMaxMemberId()
-                                .defaultIfEmpty(1L)
-                                .flatMap(memberId ->
-                                        memberRepository.save(Member.createMember(memberId + 1, memberSaveRequest))
-                                )
+                        memberRepository.save(
+                                Member.builder()
+                                        .account(memberSaveRequest.getAccount())
+                                        .password(memberSaveRequest.getPassword())
+                                        .name(memberSaveRequest.getName())
+                                        .city(memberSaveRequest.getCity())
+                                        .street(memberSaveRequest.getStreet())
+                                        .zipcode(memberSaveRequest.getZipcode())
+                                        .role(memberSaveRequest.getRole())
+                                        .build()
+                        )
                 )
-                .map(MemberResponse::new);
+                .map(member -> MemberResponse.builder()
+                        .id(member.getId())
+                        .account(member.getAccount())
+                        .name(member.getName())
+                        .city(member.getCity())
+                        .street(member.getStreet())
+                        .zipcode(member.getCity())
+                        .role(member.getRole())
+                        .build());
     }
 
     public Flux<MemberResponse> findMembers(Pageable pageable, String account, String name) {
         return memberRepository.findAll(pageable.getOffset(), pageable.getPageSize(), account, name)
-                .map(MemberResponse::new);
+                .map(member -> MemberResponse.builder()
+                        .id(member.getId())
+                        .account(member.getAccount())
+                        .name(member.getName())
+                        .city(member.getCity())
+                        .street(member.getStreet())
+                        .zipcode(member.getCity())
+                        .role(member.getRole())
+                        .build());
     }
 
     public Mono<MemberResponse> findMember(Long id) {
         return memberRepository.findById(id)
                 .switchIfEmpty(Mono.error(new CommonException(DATA_NOT_FOUND)))
-                .map(MemberResponse::new);
+                .map(member -> MemberResponse.builder()
+                        .id(member.getId())
+                        .account(member.getAccount())
+                        .name(member.getName())
+                        .city(member.getCity())
+                        .street(member.getStreet())
+                        .zipcode(member.getCity())
+                        .role(member.getRole())
+                        .build());
     }
 
     @Transactional
@@ -61,13 +89,19 @@ public class MemberService {
                     member.updateMember(memberUpdateRequest);
                     return memberRepository.save(member);
                 })
-                .map(MemberResponse::new);
+                .map(member -> MemberResponse.builder()
+                        .id(member.getId())
+                        .account(member.getAccount())
+                        .name(member.getName())
+                        .city(member.getCity())
+                        .street(member.getStreet())
+                        .zipcode(member.getCity())
+                        .role(member.getRole())
+                        .build());
     }
 
     @Transactional
     public Mono<Void> deleteMember(Long id) {
-        return memberRepository.findById(id)
-                .switchIfEmpty(Mono.error(new CommonException(DATA_NOT_FOUND)))
-                .flatMap(memberRepository::delete);
+        return memberRepository.deleteById(id);
     }
 }

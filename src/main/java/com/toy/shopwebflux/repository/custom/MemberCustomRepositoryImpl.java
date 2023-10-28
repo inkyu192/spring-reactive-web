@@ -1,5 +1,6 @@
 package com.toy.shopwebflux.repository.custom;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toy.shopwebflux.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.r2dbc.core.DatabaseClient;
@@ -15,6 +16,7 @@ import java.util.List;
 public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 
     private final DatabaseClient databaseClient;
+    private final ObjectMapper objectMapper;
 
     @Override
     public Flux<Member> findAllWithDatabaseClient(long offset, int pageSize, String account, String name) {
@@ -35,6 +37,6 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
         return databaseClient.sql(sql)
                 .fetch()
                 .all()
-                .map(Member::createMember);
+                .map(row -> objectMapper.convertValue(row, Member.class));
     }
 }

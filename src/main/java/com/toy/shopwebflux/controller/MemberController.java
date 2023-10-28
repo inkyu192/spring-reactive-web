@@ -43,7 +43,7 @@ public class MemberController {
                 .map(ApiResponse::new);
     }
 
-    @PatchMapping("{id}")
+    @PutMapping("{id}")
     public Mono<ApiResponse<MemberResponse>> updateMember(
             @PathVariable Long id,
             @RequestBody MemberUpdateRequest memberUpdateRequest
