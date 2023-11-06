@@ -1,8 +1,6 @@
 package com.toy.shopwebflux.domain;
 
 import com.toy.shopwebflux.constant.Role;
-import com.toy.shopwebflux.dto.request.MemberUpdateRequest;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
@@ -29,24 +27,39 @@ public class Member extends Base implements Persistable<Long> {
         return getCreatedDate() == null;
     }
 
-    @Builder
-    public Member(Long id, String account, String password, String name, String city, String street, String zipcode, Role role) {
-        this.id = id;
-        this.account = account;
-        this.password = password;
+    public static Member empty() {
+        return new Member();
+    }
+
+    public static Member create(
+            Long id,
+            String account,
+            String password,
+            String name,
+            Role role,
+            String city,
+            String street,
+            String zipcode
+    ) {
+        Member member = new Member();
+
+        member.id = id;
+        member.account = account;
+        member.password = password;
+        member.name = name;
+        member.role = role;
+        member.city = city;
+        member.street = street;
+        member.zipcode = zipcode;
+
+        return member;
+    }
+
+    public void update(String name, Role role, String city, String street, String zipcode) {
         this.name = name;
+        this.role = role;
         this.city = city;
         this.street = street;
         this.zipcode = zipcode;
-        this.role = role;
-    }
-
-    public void updateMember(MemberUpdateRequest memberUpdateRequest) {
-        this.password = memberUpdateRequest.getPassword();
-        this.name = memberUpdateRequest.getName();
-        this.role = memberUpdateRequest.getRole();
-        this.city = memberUpdateRequest.getCity();
-        this.street = memberUpdateRequest.getStreet();
-        this.zipcode = memberUpdateRequest.getZipcode();
     }
 }
