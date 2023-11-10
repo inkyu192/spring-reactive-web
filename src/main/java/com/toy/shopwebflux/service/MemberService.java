@@ -27,7 +27,7 @@ public class MemberService {
         return memberRepository.findByAccount(memberSaveRequest.account())
                 .defaultIfEmpty(Member.empty())
                 .flatMap(member -> {
-                    if (member.getId() != null) {
+                    if (member.getMemberId() != null) {
                         return Mono.error(new CommonException(ApiResponseCode.DATA_DUPLICATE));
                     }
 

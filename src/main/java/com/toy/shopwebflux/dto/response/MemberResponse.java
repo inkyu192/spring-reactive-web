@@ -14,7 +14,7 @@ public record MemberResponse(
 ) {
     public MemberResponse(Member member) {
         this(
-                member.getId(),
+                member.getMemberId(),
                 member.getAccount(),
                 member.getName(),
                 member.getCity(),
