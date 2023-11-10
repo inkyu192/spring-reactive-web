@@ -8,10 +8,10 @@ import com.toy.shopwebflux.dto.response.MemberResponse;
 import com.toy.shopwebflux.exception.CommonException;
 import com.toy.shopwebflux.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 
@@ -33,9 +33,9 @@ public class MemberService {
 
                     return memberRepository.findMaxMemberId()
                             .defaultIfEmpty(1L)
-                            .flatMap(id -> memberRepository.save(
+                            .flatMap(memberId -> memberRepository.save(
                                     Member.create(
-                                            id + 1,
+                                            memberId + 1,
                                             memberSaveRequest.account(),
                                             memberSaveRequest.password(),
                                             memberSaveRequest.name(),
@@ -49,9 +49,9 @@ public class MemberService {
                 .map(MemberResponse::new);
     }
 
-    public Flux<MemberResponse> findMembers(Pageable pageable, String account, String name) {
-        return memberRepository.findAllWithDatabaseClient(pageable.getOffset(), pageable.getPageSize(), account, name)
-                .map(MemberResponse::new);
+    public Mono<Page<MemberResponse>> findMembers(Pageable pageable, String account, String name) {
+        return memberRepository.findAllWithDatabaseClient(pageable, account, name)
+                .map(page -> page.map(MemberResponse::new));
     }
 
     public Mono<MemberResponse> findMember(Long id) {

@@ -1,9 +1,11 @@
 package com.toy.shopwebflux.repository.custom;
 
 import com.toy.shopwebflux.domain.Member;
-import reactor.core.publisher.Flux;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import reactor.core.publisher.Mono;
 
 public interface MemberCustomRepository {
 
-    Flux<Member> findAllWithDatabaseClient(long offset, int pageSize, String account, String name);
+    Mono<Page<Member>> findAllWithDatabaseClient(Pageable pageable, String account, String name);
 }

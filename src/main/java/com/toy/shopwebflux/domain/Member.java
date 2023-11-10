@@ -4,7 +4,6 @@ import com.toy.shopwebflux.constant.Role;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
@@ -12,8 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 public class Member extends Base implements Persistable<Long> {
 
     @Id
-    @Column("member_id")
-    private Long id;
+    private Long member_id;
     private String account;
     private String password;
     private String name;
@@ -21,6 +19,11 @@ public class Member extends Base implements Persistable<Long> {
     private String city;
     private String street;
     private String zipcode;
+
+    @Override
+    public Long getId() {
+        return member_id;
+    }
 
     @Override
     public boolean isNew() {
@@ -32,7 +35,7 @@ public class Member extends Base implements Persistable<Long> {
     }
 
     public static Member create(
-            Long id,
+            Long memberId,
             String account,
             String password,
             String name,
@@ -43,7 +46,7 @@ public class Member extends Base implements Persistable<Long> {
     ) {
         Member member = new Member();
 
-        member.id = id;
+        member.member_id = memberId;
         member.account = account;
         member.password = password;
         member.name = name;

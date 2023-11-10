@@ -6,11 +6,12 @@ import com.toy.shopwebflux.dto.response.ApiResponse;
 import com.toy.shopwebflux.dto.response.MemberResponse;
 import com.toy.shopwebflux.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("member")
@@ -26,14 +27,12 @@ public class MemberController {
     }
 
     @GetMapping
-    public Mono<ApiResponse<List<MemberResponse>>> fineMembers(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+    public Mono<ApiResponse<Page<MemberResponse>>> fineMembers(
+            Pageable pageable,
             @RequestParam(required = false) String account,
             @RequestParam(required = false) String name
     ) {
-        return memberService.findMembers(PageRequest.of(page, size), account, name)
-                .collectList()
+        return memberService.findMembers(pageable, account, name)
                 .map(ApiResponse::new);
     }
 
@@ -43,7 +42,7 @@ public class MemberController {
                 .map(ApiResponse::new);
     }
 
-    @PutMapping("{id}")
+    @PatchMapping("{id}")
     public Mono<ApiResponse<MemberResponse>> updateMember(
             @PathVariable Long id,
             @RequestBody MemberUpdateRequest memberUpdateRequest
