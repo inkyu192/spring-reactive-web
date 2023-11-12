@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.data.relational.core.query.Criteria;
+import org.springframework.data.relational.core.query.Query;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -84,4 +86,27 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
                 .flatMap(tuple -> Mono.just(new PageImpl<>(tuple.getT2(), pageable, tuple.getT1())));
     }
 
+    @Override
+    public Mono<Page<Member>> findAllWithEntityTemplate(Pageable pageable, String account, String name) {
+        Criteria criteria = Criteria.empty();
+
+        if (StringUtils.hasText(account)) {
+            criteria = criteria.and("account").is(account);
+        }
+
+        if (StringUtils.hasText(name)) {
+            criteria = criteria.and("name").is(name);
+        }
+
+        return Mono.zip(
+                        r2dbcEntityTemplate
+                                .count(Query.query(criteria), Member.class),
+                        r2dbcEntityTemplate
+                                .select(Member.class)
+                                .matching(Query.query(criteria).with(pageable))
+                                .all()
+                                .collectList()
+                )
+                .flatMap(tuple -> Mono.just(new PageImpl<>(tuple.getT2(), pageable, tuple.getT1())));
+    }
 }

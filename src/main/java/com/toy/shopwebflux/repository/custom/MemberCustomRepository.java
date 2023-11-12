@@ -8,4 +8,6 @@ import reactor.core.publisher.Mono;
 public interface MemberCustomRepository {
 
     Mono<Page<Member>> findAllWithDatabaseClient(Pageable pageable, String account, String name);
+
+    Mono<Page<Member>> findAllWithEntityTemplate(Pageable pageable, String account, String name);
 }
