@@ -1,28 +1,23 @@
 package com.toy.shopwebflux.repository.custom;
 
-import com.toy.shopwebflux.constant.Role;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toy.shopwebflux.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
-import org.springframework.data.relational.core.query.Criteria;
-import org.springframework.data.relational.core.query.Query;
 import org.springframework.r2dbc.core.DatabaseClient;
-import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-@Repository
 @RequiredArgsConstructor
 public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 
     private final DatabaseClient databaseClient;
-    private final R2dbcEntityTemplate r2dbcEntityTemplate;
+    private final ObjectMapper objectMapper;
 
     @Override
     public Mono<Page<Member>> findAllWithDatabaseClient(Pageable pageable, String account, String name) {
@@ -59,7 +54,7 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
             contentSql += String.join(",", orderList);
         }
 
-        contentSql += " LIMIT :offset, :pageSize";
+        contentSql += " LIMIT " + pageable.getOffset() + ", " + pageable.getPageSize();
 
         return Mono.zip(
                         databaseClient.sql(countSql)
@@ -67,44 +62,9 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
                                 .one()
                                 .map(row -> (long) row.get("cnt")),
                         databaseClient.sql(contentSql)
-                                .bind("offset", pageable.getOffset())
-                                .bind("pageSize", pageable.getPageSize())
                                 .fetch()
                                 .all()
-                                .map(row -> Member.create(
-                                        (Long) row.get("member_id"),
-                                        (String) row.get("account"),
-                                        (String) row.get("password"),
-                                        (String) row.get("name"),
-                                        Role.valueOf((String) row.get("role")),
-                                        (String) row.get("city"),
-                                        (String) row.get("street"),
-                                        (String) row.get("zipcode")
-                                ))
-                                .collectList()
-                )
-                .flatMap(tuple -> Mono.just(new PageImpl<>(tuple.getT2(), pageable, tuple.getT1())));
-    }
-
-    @Override
-    public Mono<Page<Member>> findAllWithEntityTemplate(Pageable pageable, String account, String name) {
-        Criteria criteria = Criteria.empty();
-
-        if (StringUtils.hasText(account)) {
-            criteria = criteria.and("account").is(account);
-        }
-
-        if (StringUtils.hasText(name)) {
-            criteria = criteria.and("name").is(name);
-        }
-
-        return Mono.zip(
-                        r2dbcEntityTemplate
-                                .count(Query.query(criteria), Member.class),
-                        r2dbcEntityTemplate
-                                .select(Member.class)
-                                .matching(Query.query(criteria).with(pageable))
-                                .all()
+                                .map(row -> objectMapper.convertValue(row, Member.class))
                                 .collectList()
                 )
                 .flatMap(tuple -> Mono.just(new PageImpl<>(tuple.getT2(), pageable, tuple.getT1())));
