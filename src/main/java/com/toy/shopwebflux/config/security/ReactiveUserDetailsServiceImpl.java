@@ -1,4 +1,4 @@
-package com.toy.shopwebflux.common;
+package com.toy.shopwebflux.config.security;
 
 import com.toy.shopwebflux.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

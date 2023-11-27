@@ -1,19 +1,21 @@
-package com.toy.shopwebflux.service;
+package com.toy.shopwebflux.config.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 public class JwtTokenProvider {
 
     private final Key accessTokenKey;
@@ -41,5 +43,38 @@ public class JwtTokenProvider {
                 .setExpiration(new Date(new Date().getTime() + accessTokenExpirationTime))
                 .signWith(accessTokenKey, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    public String getAccessToken(ServerHttpRequest request) {
+        String accessToken = null;
+        String token = request.getHeaders().getFirst("Authorization");
+
+        if (StringUtils.hasText(token) && token.startsWith("Bearer")) {
+            accessToken = token.replace("Bearer ", "");
+        }
+
+        return accessToken;
+    }
+
+    public Claims parseClaims(String token) {
+        Claims claims;
+
+        try {
+            claims = Jwts.parserBuilder()
+                    .setSigningKey(accessTokenKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (SecurityException e) {
+            throw new SecurityException("잘못된 토큰", e);
+        }  catch (MalformedJwtException e) {
+            throw new MalformedJwtException("잘못된 토큰", e);
+        }  catch (UnsupportedJwtException e) {
+            throw new UnsupportedJwtException("지원되지 않는 토큰", e);
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), "만료된 토큰", e);
+        }
+
+        return claims;
     }
 }

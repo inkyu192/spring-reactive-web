@@ -1,6 +1,7 @@
-package com.toy.shopwebflux.common;
+package com.toy.shopwebflux.config.security;
 
 import com.toy.shopwebflux.domain.Member;
+import io.jsonwebtoken.Claims;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,12 @@ public class UserDetailsImpl implements UserDetails {
         this.account = member.getAccount();
         this.password = member.getPassword();
         this.role = member.getRole().toString();
+    }
+
+    public UserDetailsImpl(Claims claims) {
+        this.account = claims.getSubject();
+        this.password = null;
+        this.role = claims.get("authorities").toString();
     }
 
     @Override

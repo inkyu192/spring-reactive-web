@@ -1,6 +1,8 @@
 package com.toy.shopwebflux.config;
 
-import com.toy.shopwebflux.common.ReactiveUserDetailsServiceImpl;
+import com.toy.shopwebflux.config.security.JwtAuthenticationWebFilter;
+import com.toy.shopwebflux.config.security.JwtTokenProvider;
+import com.toy.shopwebflux.config.security.ReactiveUserDetailsServiceImpl;
 import com.toy.shopwebflux.repository.MemberRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,11 +10,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 
 @Configuration(proxyBeanMethods = false)
 @EnableWebFluxSecurity
@@ -21,7 +25,8 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(
             ServerHttpSecurity serverHttpSecurity,
-            ReactiveAuthenticationManager reactiveAuthenticationManager
+            ReactiveAuthenticationManager reactiveAuthenticationManager,
+            AuthenticationWebFilter authenticationWebFilter
     ) {
         return serverHttpSecurity
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
@@ -29,6 +34,7 @@ public class SecurityConfig {
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .authenticationManager(reactiveAuthenticationManager)
+                .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHORIZATION)
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers("/actuator/**").permitAll()
                         .pathMatchers("/login").permitAll()
@@ -57,5 +63,13 @@ public class SecurityConfig {
                 new UserDetailsRepositoryReactiveAuthenticationManager(reactiveUserDetailsService);
         userDetailsRepositoryReactiveAuthenticationManager.setPasswordEncoder(passwordEncoder);
         return userDetailsRepositoryReactiveAuthenticationManager;
+    }
+
+    @Bean
+    public AuthenticationWebFilter authenticationWebFilter(
+            ReactiveAuthenticationManager reactiveAuthenticationManager,
+            JwtTokenProvider jwtTokenProvider
+    ) {
+        return new JwtAuthenticationWebFilter(reactiveAuthenticationManager, jwtTokenProvider);
     }
 }

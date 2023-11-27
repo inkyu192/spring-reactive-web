@@ -1,5 +1,6 @@
 package com.toy.shopwebflux.service;
 
+import com.toy.shopwebflux.config.security.JwtTokenProvider;
 import com.toy.shopwebflux.dto.request.LoginRequest;
 import com.toy.shopwebflux.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
