@@ -1,6 +1,8 @@
 package com.toy.shopwebflux.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toy.shopwebflux.config.security.JwtAuthenticationWebFilter;
+import com.toy.shopwebflux.config.security.JwtExceptionFilter;
 import com.toy.shopwebflux.config.security.JwtTokenProvider;
 import com.toy.shopwebflux.config.security.ReactiveUserDetailsServiceImpl;
 import com.toy.shopwebflux.repository.MemberRepository;
@@ -26,7 +28,8 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(
             ServerHttpSecurity serverHttpSecurity,
             ReactiveAuthenticationManager reactiveAuthenticationManager,
-            JwtAuthenticationWebFilter jwtAuthenticationWebFilter
+            JwtAuthenticationWebFilter jwtAuthenticationWebFilter,
+            JwtExceptionFilter jwtExceptionFilter
     ) {
         return serverHttpSecurity
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
@@ -35,6 +38,7 @@ public class SecurityConfig {
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .authenticationManager(reactiveAuthenticationManager)
                 .addFilterAt(jwtAuthenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+                .addFilterAt(jwtExceptionFilter, SecurityWebFiltersOrder.FIRST)
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers("/actuator/**").permitAll()
                         .pathMatchers("/login").permitAll()
@@ -79,5 +83,10 @@ public class SecurityConfig {
             JwtTokenProvider jwtTokenProvider
     ) {
         return new JwtAuthenticationWebFilter(reactiveAuthenticationManager, jwtTokenProvider);
+    }
+
+    @Bean
+    public JwtExceptionFilter jwtExceptionFilter(ObjectMapper objectMapper) {
+        return new JwtExceptionFilter(objectMapper);
     }
 }
