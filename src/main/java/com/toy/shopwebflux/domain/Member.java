@@ -3,11 +3,12 @@ package com.toy.shopwebflux.domain;
 import com.toy.shopwebflux.constant.Role;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Table
-public class Member extends Base {
+public class Member extends Base implements Persistable<Long> {
 
     @Id
     private Long memberId;
@@ -18,6 +19,16 @@ public class Member extends Base {
     private String city;
     private String street;
     private String zipcode;
+
+    @Override
+    public Long getId() {
+        return memberId;
+    }
+
+    @Override
+    public boolean isNew() {
+        return getCreatedDate() == null;
+    }
 
     public static Member empty() {
         return new Member();
