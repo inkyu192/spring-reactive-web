@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .addFilterAt(jwtExceptionFilter, SecurityWebFiltersOrder.FIRST)
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers("/actuator/**").permitAll()
+                        .pathMatchers("/customer/**").permitAll()
                         .pathMatchers("/login").permitAll()
                         .pathMatchers(HttpMethod.POST, "/member").permitAll()
                         .anyExchange().authenticated()
