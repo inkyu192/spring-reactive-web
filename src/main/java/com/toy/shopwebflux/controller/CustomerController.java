@@ -24,10 +24,6 @@ public class CustomerController {
 
     @GetMapping("/customer/sse")
     public Flux<ServerSentEvent<Customer>> findAllSSE(@RequestParam String firstname) {
-        customerRepository.findAll()
-                .doOnNext(sink::tryEmitNext)
-                .subscribe();
-
         return sink.asFlux()
                 .filter(customer -> customer.getFirstName().equals(firstname))
                 .map(customer -> ServerSentEvent.builder(customer).build());
