@@ -26,7 +26,8 @@ public class CustomerController {
     public Flux<ServerSentEvent<Customer>> findAllSSE(@RequestParam String firstname) {
         return sink.asFlux()
                 .filter(customer -> customer.getFirstName().equals(firstname))
-                .map(customer -> ServerSentEvent.builder(customer).build());
+                .map(customer -> ServerSentEvent.builder(customer).build())
+                .doOnCancel(() -> sink.asFlux().blockLast());
     }
 
     @PostMapping("/customer")
