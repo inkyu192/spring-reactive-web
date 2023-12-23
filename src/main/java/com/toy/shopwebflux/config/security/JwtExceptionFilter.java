@@ -5,9 +5,7 @@ import com.toy.shopwebflux.constant.ApiResponseCode;
 import com.toy.shopwebflux.dto.response.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SecurityException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.MediaType;
@@ -25,16 +23,16 @@ public class JwtExceptionFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         return chain.filter(exchange)
-                .onErrorResume(SecurityException.class, e -> handleJwtException(exchange.getResponse(), "잘못된 토큰"))
-                .onErrorResume(MalformedJwtException.class, e -> handleJwtException(exchange.getResponse(), "잘못된 토큰"))
-                .onErrorResume(UnsupportedJwtException.class, e -> handleJwtException(exchange.getResponse(), "지원되지 않는 토큰"))
-                .onErrorResume(ExpiredJwtException.class, e -> handleJwtException(exchange.getResponse(), "만료된 토큰"))
-                .onErrorResume(JwtException.class, e -> handleJwtException(exchange.getResponse(), e.getMessage()));
+                .onErrorResume(UnsupportedJwtException.class, e -> setResponse(exchange, ApiResponseCode.UNSUPPORTED_TOKEN))
+                .onErrorResume(ExpiredJwtException.class, e -> setResponse(exchange, ApiResponseCode.EXPIRED_TOKEN))
+                .onErrorResume(JwtException.class, e -> setResponse(exchange, ApiResponseCode.BAD_TOKEN));
     }
 
     @SneakyThrows
-    private Mono<Void> handleJwtException(ServerHttpResponse response, String message) {
-        ApiResponse<String> apiResponse = new ApiResponse<>(ApiResponseCode.BAD_REQUEST, message);
+    private Mono<Void> setResponse(ServerWebExchange exchange, ApiResponseCode apiResponseCode) {
+        ServerHttpResponse response = exchange.getResponse();
+        ApiResponse<String> apiResponse = new ApiResponse<>(apiResponseCode);
+
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
         byte[] responseData = objectMapper.writeValueAsBytes(apiResponse);
