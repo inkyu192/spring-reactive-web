@@ -1,6 +1,7 @@
 package com.toy.shopwebflux.config.security;
 
 import io.jsonwebtoken.Claims;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,10 +27,10 @@ public class JwtAuthenticationWebFilter extends AuthenticationWebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        String accessToken = jwtTokenProvider.getAccessToken(exchange.getRequest());
+        String accessToken = getAccessToken(exchange.getRequest());
 
         if (StringUtils.hasText(accessToken)) {
-            Claims claims = jwtTokenProvider.parseClaims(accessToken);
+            Claims claims = jwtTokenProvider.parseAccessToken(accessToken);
             UserDetails userDetails = new UserDetailsImpl(claims);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     userDetails,
@@ -42,5 +43,16 @@ public class JwtAuthenticationWebFilter extends AuthenticationWebFilter {
         }
 
         return super.filter(exchange, chain);
+    }
+
+    public String getAccessToken(ServerHttpRequest request) {
+        String accessToken = null;
+        String token = request.getHeaders().getFirst("Authorization");
+
+        if (StringUtils.hasText(token) && token.startsWith("Bearer")) {
+            accessToken = token.replace("Bearer ", "");
+        }
+
+        return accessToken;
     }
 }
