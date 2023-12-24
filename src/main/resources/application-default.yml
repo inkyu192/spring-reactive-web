@@ -3,3 +3,7 @@ spring:
     url: r2dbc:mysql://localhost:3306/shop
     username: root
     password: root
+  data:
+    redis:
+      host: localhost
+      port: 6379

@@ -2,6 +2,9 @@ package com.toy.shopwebflux.exception;
 
 import com.toy.shopwebflux.constant.ApiResponseCode;
 import com.toy.shopwebflux.dto.response.ApiResponse;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -35,6 +38,17 @@ public class ControllerAdvice {
                                 .toList()
                 )
         );
+    }
+
+    @ExceptionHandler
+    public ApiResponse<Void> handler(JwtException e) {
+        if (e instanceof UnsupportedJwtException) {
+            return new ApiResponse<>(ApiResponseCode.UNSUPPORTED_TOKEN);
+        } else if (e instanceof ExpiredJwtException) {
+            return new ApiResponse<>(ApiResponseCode.EXPIRED_TOKEN);
+        } else{
+            return new ApiResponse<>(ApiResponseCode.BAD_TOKEN);
+        }
     }
 
     @ExceptionHandler

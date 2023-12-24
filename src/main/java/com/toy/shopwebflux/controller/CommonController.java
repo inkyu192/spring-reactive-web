@@ -16,7 +16,7 @@ public class CommonController {
 
     private final CommonService commonService;
 
-    @PostMapping("login")
+    @PostMapping("/auth/login")
     public Mono<ApiResponse<TokenResponse>> login(@RequestBody LoginRequest loginRequest) {
         return commonService.login(loginRequest)
                 .map(ApiResponse::new);

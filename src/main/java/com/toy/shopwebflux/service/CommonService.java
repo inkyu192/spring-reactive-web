@@ -2,9 +2,11 @@ package com.toy.shopwebflux.service;
 
 import com.toy.shopwebflux.config.security.JwtTokenProvider;
 import com.toy.shopwebflux.constant.ApiResponseCode;
+import com.toy.shopwebflux.domain.Token;
 import com.toy.shopwebflux.dto.request.LoginRequest;
 import com.toy.shopwebflux.dto.response.TokenResponse;
 import com.toy.shopwebflux.exception.CommonException;
+import com.toy.shopwebflux.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -18,6 +20,7 @@ public class CommonService {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final ReactiveAuthenticationManager reactiveAuthenticationManager;
+    private final TokenRepository tokenRepository;
 
     public Mono<TokenResponse> login(LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -27,6 +30,12 @@ public class CommonService {
                 .onErrorResume(BadCredentialsException.class, e ->
                         Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS))
                 )
-                .map(authentication -> new TokenResponse(jwtTokenProvider.createAccessToken(authentication)));
+                .flatMap(authentication -> {
+                    String accessToken = jwtTokenProvider.createAccessToken(authentication);
+                    String refreshToken = jwtTokenProvider.createRefreshToken();
+
+                    return tokenRepository.save(Token.create(authentication.getName(), refreshToken))
+                            .thenReturn(new TokenResponse(accessToken, refreshToken));
+                });
     }
 }

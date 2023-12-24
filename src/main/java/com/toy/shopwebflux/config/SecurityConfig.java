@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers("/actuator/**").permitAll()
                         .pathMatchers("/customer/**").permitAll()
-                        .pathMatchers("/login").permitAll()
+                        .pathMatchers("/auth/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "/member").permitAll()
                         .anyExchange().authenticated()
                 )
