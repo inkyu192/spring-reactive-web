@@ -45,6 +45,30 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String createAccessToken(Claims claims) {
+        return Jwts.builder()
+                .setHeaderParam("alg", "HS256")
+                .setHeaderParam("typ", "JWT")
+                .claim("account", claims.getSubject())
+                .claim("authorities", claims.get("authorities").toString())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(new Date().getTime() + accessTokenExpirationTime))
+                .signWith(accessTokenKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String createAccessToken(String account, String authorities) {
+        return Jwts.builder()
+                .setHeaderParam("alg", "HS256")
+                .setHeaderParam("typ", "JWT")
+                .claim("account", account)
+                .claim("authorities", authorities)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(new Date().getTime() + accessTokenExpirationTime))
+                .signWith(accessTokenKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     public String createRefreshToken() {
         return Jwts.builder()
                 .setHeaderParam("alg", "HS256")

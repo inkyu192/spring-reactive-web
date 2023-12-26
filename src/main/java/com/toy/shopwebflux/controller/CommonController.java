@@ -1,6 +1,7 @@
 package com.toy.shopwebflux.controller;
 
 import com.toy.shopwebflux.dto.request.LoginRequest;
+import com.toy.shopwebflux.dto.request.TokenRequest;
 import com.toy.shopwebflux.dto.response.ApiResponse;
 import com.toy.shopwebflux.dto.response.TokenResponse;
 import com.toy.shopwebflux.service.CommonService;
@@ -22,5 +23,9 @@ public class CommonController {
                 .map(ApiResponse::new);
     }
 
-    //@PostMapping("refresh")
+    @PostMapping("/auth/refresh")
+    public Mono<ApiResponse<TokenResponse>> refresh(@RequestBody TokenRequest tokenRequest) {
+        return commonService.refresh(tokenRequest)
+                .map(ApiResponse::new);
+    }
 }

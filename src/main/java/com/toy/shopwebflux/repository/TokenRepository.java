@@ -15,19 +15,25 @@ public class TokenRepository {
     private final ReactiveRedisTemplate<String, String> reactiveRedisTemplate;
 
     public Mono<Token> save(Token token) {
-        ReactiveSetOperations<String, String> set = reactiveRedisTemplate.opsForSet();
-        ReactiveHashOperations<String, String, String> hashOps = reactiveRedisTemplate.opsForHash();
-
+        ReactiveSetOperations<String, String> reactiveSetOperations = reactiveRedisTemplate.opsForSet();
+        ReactiveHashOperations<String, String, String> reactiveHashOperations = reactiveRedisTemplate.opsForHash();
 
         return Mono.zip(
-                        set.add("token", token.getAccount()),
-                        hashOps.put("token:" + token.getAccount(), "account", token.getAccount()),
-                        hashOps.put("token:" + token.getAccount(), "refreshToken", token.getRefreshToken()),
-
-                        hashOps.put("token:" + token.getAccount(), "_class", token.getClass().getName())
+                        reactiveSetOperations.add("token", token.getAccount()),
+                        reactiveHashOperations.put("token:" + token.getAccount(), "account", token.getAccount()),
+                        reactiveHashOperations.put("token:" + token.getAccount(), "refreshToken", token.getRefreshToken()),
+                        reactiveHashOperations.put("token:" + token.getAccount(), "_class", token.getClass().getName())
                 )
                 .thenReturn(token);
     }
 
-    // Token findById account
+    public Mono<Token> findById(String id) {
+        ReactiveHashOperations<String, String, String> reactiveHashOperations = reactiveRedisTemplate.opsForHash();
+
+        return Mono.zip(
+                        reactiveHashOperations.get("token:" + id, "account"),
+                        reactiveHashOperations.get("token:" + id, "refreshToken")
+                )
+                .map(objects -> Token.create(objects.getT1(), objects.getT2()));
+    }
 }
