@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class CommonService {
+public class AuthService {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final ReactiveAuthenticationManager reactiveAuthenticationManager;
