@@ -14,8 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +37,12 @@ public class AuthService {
                         Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS))
                 )
                 .flatMap(authentication -> {
-                    String accessToken = jwtTokenProvider.createAccessToken(authentication);
+                    String accessToken = jwtTokenProvider.createAccessToken(
+                            authentication.getName(),
+                            authentication.getAuthorities().stream()
+                                    .map(GrantedAuthority::getAuthority)
+                                    .collect(Collectors.joining(","))
+                    );
                     String refreshToken = jwtTokenProvider.createRefreshToken();
 
                     return tokenRepository.save(Token.create(authentication.getName(), refreshToken))
