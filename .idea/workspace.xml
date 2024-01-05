@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="99abc132-b5b4-412f-b3f6-db933ca45ee9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toy/shopwebflux/config/security/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toy/shopwebflux/config/security/JwtTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/toy/shopwebflux/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/toy/shopwebflux/service/AuthService.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/spring-reactive-web-java">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/spring-reactive-web-kotlin">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2W7hKbTLPO9UfRNwZmuxXiqX1NW" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+    <ConfirmationsSetting value="1" id="Remove" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build shop-webflux.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build spring-reactive-web-java.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.shop-webflux [compileJava].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ShopWebfluxApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.SpringReactiveWebJavaApplication.executor&quot;: &quot;Run&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;openjdk-21&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/inkyu192/IdeaProjects/spring-reactive-web/spring-reactive-web-java/src/main/java/spring/reactive/web/java/controller&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.23793103&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
+    ]
+  }
+}</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/spring-reactive-web-java/src/main/java/spring/reactive/web/java/controller" />
+      <recent name="$PROJECT_DIR$/spring-reactive-web-java/src/main/java/spring/reactive/web/java/service" />
+      <recent name="$PROJECT_DIR$/spring-reactive-web-java/src/main/java/spring/reactive/web/java/config/security" />
+      <recent name="$PROJECT_DIR$/spring-reactive-web-java/src/main/java/spring/reactive/web/java/config" />
+      <recent name="$PROJECT_DIR$/spring-reactive-web-java/src/main/java/spring/reactive/web/java/repository/custom" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.toy.shopwebflux.service" />
+      <recent name="com.toy.shopwebflux.dto.request" />
+      <recent name="com.toy.shopwebflux.dto.response" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.SpringReactiveWebJavaApplication">
+    <configuration name="SpringReactiveWebJavaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="spring-reactive-web-java.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="spring.reactive.web.java.SpringReactiveWebJavaApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpringReactiveWebKotlinApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="spring-reactive-web-kotlin.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="spring.reactive.web.kotlin.SpringReactiveWebKotlinApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-3183f394aec4-5f3ff201" />
+        <option value="jdk-21.0.1-openjdk-21.0.1-f644763e9732-2f79fb23" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="99abc132-b5b4-412f-b3f6-db933ca45ee9" name="Changes" comment="" />
+      <created>1696089463702</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1696089463702</updated>
+      <workItem from="1696089465649" duration="389000" />
+      <workItem from="1696089998571" duration="95000" />
+      <workItem from="1696121134864" duration="615000" />
+      <workItem from="1696207380621" duration="196000" />
+      <workItem from="1696207691959" duration="606000" />
+      <workItem from="1696213173315" duration="560000" />
+      <workItem from="1696213818745" duration="2897000" />
+      <workItem from="1696219370693" duration="13000" />
+      <workItem from="1696234631256" duration="880000" />
+      <workItem from="1696238569240" duration="2326000" />
+      <workItem from="1696245484587" duration="37000" />
+      <workItem from="1696261870796" duration="30000" />
+      <workItem from="1696300819948" duration="220000" />
+      <workItem from="1696825574618" duration="50000" />
+      <workItem from="1696825670921" duration="226000" />
+      <workItem from="1696827988093" duration="24000" />
+      <workItem from="1696828949845" duration="50000" />
+      <workItem from="1697207085870" duration="3318000" />
+      <workItem from="1697251685170" duration="8478000" />
+      <workItem from="1697332393962" duration="7453000" />
+      <workItem from="1697550380969" duration="30000" />
+      <workItem from="1698500564656" duration="9423000" />
+      <workItem from="1698676331786" duration="3916000" />
+      <workItem from="1698931796644" duration="26000" />
+      <workItem from="1699115154328" duration="1574000" />
+      <workItem from="1699148407902" duration="1041000" />
+      <workItem from="1699280049409" duration="5578000" />
+      <workItem from="1699592534783" duration="7016000" />
+      <workItem from="1699690199466" duration="8552000" />
+      <workItem from="1699890948361" duration="381000" />
+      <workItem from="1700271426549" duration="2120000" />
+      <workItem from="1700353710641" duration="1469000" />
+      <workItem from="1700913130163" duration="3202000" />
+      <workItem from="1700961021010" duration="14065000" />
+      <workItem from="1701487548295" duration="13626000" />
+      <workItem from="1702088934400" duration="6076000" />
+      <workItem from="1702394507170" duration="2765000" />
+      <workItem from="1702654245964" duration="5882000" />
+      <workItem from="1702813373924" duration="8000" />
+      <workItem from="1703346120127" duration="592000" />
+      <workItem from="1703346721033" duration="8913000" />
+      <workItem from="1703475441360" duration="1461000" />
+      <workItem from="1703602825378" duration="547000" />
+      <workItem from="1703603405415" duration="22000" />
+      <workItem from="1703689936920" duration="448000" />
+      <workItem from="1703780089097" duration="79000" />
+      <workItem from="1703854737807" duration="1221000" />
+      <workItem from="1703868226238" duration="234000" />
+      <workItem from="1703868499252" duration="40000" />
+      <workItem from="1703868541044" duration="196000" />
+      <workItem from="1703868751743" duration="73000" />
+      <workItem from="1703868830924" duration="107000" />
+      <workItem from="1703868948170" duration="696000" />
+      <workItem from="1704027929430" duration="25000" />
+      <workItem from="1704293643463" duration="576000" />
+    </task>
+    <task id="LOCAL-00001" summary="수정">
+      <option name="closed" value="true" />
+      <created>1696089765437</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1696089765437</updated>
+    </task>
+    <task id="LOCAL-00002" summary="수정">
+      <option name="closed" value="true" />
+      <created>1696207564539</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1696207564539</updated>
+    </task>
+    <task id="LOCAL-00003" summary="수정">
+      <option name="closed" value="true" />
+      <created>1696216924187</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1696216924187</updated>
+    </task>
+    <task id="LOCAL-00004" summary="수정">
+      <option name="closed" value="true" />
+      <created>1697210355385</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1697210355385</updated>
+    </task>
+    <task id="LOCAL-00005" summary="수정">
+      <option name="closed" value="true" />
+      <created>1697298006623</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1697298006623</updated>
+    </task>
+    <task id="LOCAL-00006" summary="수정">
+      <option name="closed" value="true" />
+      <created>1697471951819</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1697471951819</updated>
+    </task>
+    <task id="LOCAL-00007" summary="수정">
+      <option name="closed" value="true" />
+      <created>1698503026160</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1698503026160</updated>
+    </task>
+    <task id="LOCAL-00008" summary="수정">
+      <option name="closed" value="true" />
+      <created>1698508299442</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1698508299442</updated>
+    </task>
+    <task id="LOCAL-00009" summary="수정">
+      <option name="closed" value="true" />
+      <created>1699281133617</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1699281133617</updated>
+    </task>
+    <task id="LOCAL-00010" summary="수정">
+      <option name="closed" value="true" />
+      <created>1699628016116</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1699628016116</updated>
+    </task>
+    <task id="LOCAL-00011" summary="수정">
+      <option name="closed" value="true" />
+      <created>1699632028700</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1699632028700</updated>
+    </task>
+    <task id="LOCAL-00012" summary="수정">
+      <option name="closed" value="true" />
+      <created>1699756479129</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1699756479129</updated>
+    </task>
+    <task id="LOCAL-00013" summary="수정">
+      <option name="closed" value="true" />
+      <created>1700275192760</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1700275192760</updated>
+    </task>
+    <task id="LOCAL-00014" summary="수정">
+      <option name="closed" value="true" />
+      <created>1700353964413</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1700353964413</updated>
+    </task>
+    <task id="LOCAL-00015" summary="수정">
+      <option name="closed" value="true" />
+      <created>1700964963037</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1700964963037</updated>
+    </task>
+    <task id="LOCAL-00016" summary="수정">
+      <option name="closed" value="true" />
+      <created>1701094199068</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1701094199068</updated>
+    </task>
+    <task id="LOCAL-00017" summary="수정">
+      <option name="closed" value="true" />
+      <created>1701356443560</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1701356443560</updated>
+    </task>
+    <task id="LOCAL-00018" summary="수정">
+      <option name="closed" value="true" />
+      <created>1701445592946</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1701445592946</updated>
+    </task>
+    <task id="LOCAL-00019" summary="수정">
+      <option name="closed" value="true" />
+      <created>1702089336008</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1702089336008</updated>
+    </task>
+    <task id="LOCAL-00020" summary="수정">
+      <option name="closed" value="true" />
+      <created>1702089345184</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1702089345184</updated>
+    </task>
+    <task id="LOCAL-00021" summary="수정">
+      <option name="closed" value="true" />
+      <created>1702220000892</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1702220000892</updated>
+    </task>
+    <task id="LOCAL-00022" summary="수정">
+      <option name="closed" value="true" />
+      <created>1702220950923</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1702220950923</updated>
+    </task>
+    <task id="LOCAL-00023" summary="수정">
+      <option name="closed" value="true" />
+      <created>1703346240482</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1703346240482</updated>
+    </task>
+    <task id="LOCAL-00024" summary="수정">
+      <option name="closed" value="true" />
+      <created>1703346747574</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1703346747574</updated>
+    </task>
+    <task id="LOCAL-00025" summary="수정">
+      <option name="closed" value="true" />
+      <created>1703431371145</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1703431371145</updated>
+    </task>
+    <task id="LOCAL-00026" summary="수정">
+      <option name="closed" value="true" />
+      <created>1703602994512</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1703602994512</updated>
+    </task>
+    <task id="LOCAL-00027" summary="수정">
+      <option name="closed" value="true" />
+      <created>1703690035932</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1703690035932</updated>
+    </task>
+    <task id="LOCAL-00028" summary="수정">
+      <option name="closed" value="true" />
+      <created>1703868241210</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1703868241210</updated>
+    </task>
+    <task id="LOCAL-00029" summary="수정">
+      <option name="closed" value="true" />
+      <created>1703868263332</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1703868263332</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="수정" />
+  </component>
+</project>
