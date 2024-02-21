@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.ReactiveSetOperations;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
+import reactor.function.TupleUtils;
 import spring.reactive.web.java.domain.Token;
 
 @Repository
@@ -34,6 +35,6 @@ public class TokenRepository {
                         reactiveHashOperations.get("token:" + id, "account"),
                         reactiveHashOperations.get("token:" + id, "refreshToken")
                 )
-                .map(objects -> Token.create(objects.getT1(), objects.getT2()));
+                .map(TupleUtils.function(Token::create));
     }
 }

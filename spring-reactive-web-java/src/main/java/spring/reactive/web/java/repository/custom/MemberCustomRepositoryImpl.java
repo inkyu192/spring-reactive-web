@@ -67,6 +67,6 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
                                 .map(row -> objectMapper.convertValue(row, Member.class))
                                 .collectList()
                 )
-                .flatMap(tuple -> Mono.just(new PageImpl<>(tuple.getT2(), pageable, tuple.getT1())));
+                .map(tuple -> new PageImpl<>(tuple.getT2(), pageable, tuple.getT1()));
     }
 }
