@@ -3,7 +3,6 @@ package spring.reactive.web.java.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,9 +33,7 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(loginRequest.account(), loginRequest.password());
 
         return reactiveAuthenticationManager.authenticate(usernamePasswordAuthenticationToken)
-                .onErrorResume(BadCredentialsException.class, e ->
-                        Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS))
-                )
+                .onErrorResume(authentication -> Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS)))
                 .zipWhen(authentication -> tokenRepository.save(
                         Token.create(authentication.getName(), jwtTokenProvider.createRefreshToken())
                 ))
@@ -65,9 +62,8 @@ public class AuthService {
         String authorities = claims.get("authorities").toString();
 
         return tokenRepository.findById(account)
+                .filter(token -> tokenRequest.refreshToken().equals(token.getRefreshToken()))
                 .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS)))
-                .filterWhen(token -> Mono.just(tokenRequest.refreshToken().equals(token.getRefreshToken()))
-                        .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS))))
                 .map(token -> new TokenResponse(jwtTokenProvider.createAccessToken(account, authorities)));
     }
 }
