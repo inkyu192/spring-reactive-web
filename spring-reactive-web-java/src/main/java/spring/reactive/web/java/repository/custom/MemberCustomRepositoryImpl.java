@@ -1,6 +1,9 @@
 package spring.reactive.web.java.repository.custom;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,11 +16,17 @@ import spring.reactive.web.java.domain.Member;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 public class MemberCustomRepositoryImpl implements MemberCustomRepository {
 
     private final DatabaseClient databaseClient;
     private final ObjectMapper objectMapper;
+
+    public MemberCustomRepositoryImpl(DatabaseClient databaseClient) {
+        this.databaseClient = databaseClient;
+        this.objectMapper = new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+    }
 
     @Override
     public Mono<Page<Member>> findAllWithDatabaseClient(Pageable pageable, String account, String name) {
