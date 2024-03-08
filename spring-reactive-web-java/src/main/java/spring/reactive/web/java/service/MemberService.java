@@ -26,26 +26,21 @@ public class MemberService {
     public Mono<MemberResponse> saveMember(MemberSaveRequest memberSaveRequest) {
         return memberRepository.findByAccount(memberSaveRequest.account())
                 .defaultIfEmpty(Member.empty())
-                .flatMap(member -> {
-                    if (member.getMemberId() != null) {
-                        return Mono.error(new CommonException(ApiResponseCode.DATA_DUPLICATE));
-                    }
-
-                    return memberRepository.findMaxMemberId()
-                            .defaultIfEmpty(1L)
-                            .flatMap(memberId -> memberRepository.save(
-                                    Member.create(
-                                            memberId + 1,
-                                            memberSaveRequest.account(),
-                                            memberSaveRequest.password(),
-                                            memberSaveRequest.name(),
-                                            memberSaveRequest.role(),
-                                            memberSaveRequest.city(),
-                                            memberSaveRequest.street(),
-                                            memberSaveRequest.zipcode()
-                                    )
-                            ));
-                })
+                .filter(member -> member.getMemberId() != null)
+                .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.DATA_DUPLICATE)))
+                .flatMap(member -> memberRepository.findMaxMemberId().defaultIfEmpty(1L))
+                .flatMap(memberId -> memberRepository.save(
+                        Member.create(
+                                memberId + 1,
+                                memberSaveRequest.account(),
+                                memberSaveRequest.password(),
+                                memberSaveRequest.name(),
+                                memberSaveRequest.role(),
+                                memberSaveRequest.city(),
+                                memberSaveRequest.street(),
+                                memberSaveRequest.zipcode()
+                        )
+                ))
                 .map(MemberResponse::new);
     }
 

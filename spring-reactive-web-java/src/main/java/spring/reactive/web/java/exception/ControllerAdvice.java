@@ -17,7 +17,6 @@ import spring.reactive.web.java.dto.response.ApiResponse;
 import java.util.List;
 
 
-
 @Slf4j
 @RestControllerAdvice
 public class ControllerAdvice {
@@ -46,7 +45,7 @@ public class ControllerAdvice {
             return new ApiResponse<>(ApiResponseCode.UNSUPPORTED_TOKEN);
         } else if (e instanceof ExpiredJwtException) {
             return new ApiResponse<>(ApiResponseCode.EXPIRED_TOKEN);
-        } else{
+        } else {
             return new ApiResponse<>(ApiResponseCode.BAD_TOKEN);
         }
     }

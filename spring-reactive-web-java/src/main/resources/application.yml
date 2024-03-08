@@ -8,10 +8,10 @@ logging:
 
 jwt:
   access-token:
-    key: VlwEyVBsYt9V7zq57TejMnVUyZblYcfPQye08f7MgAA9XkHa
+    key: QpBdfsWyplp6z4I/DuwSNdQ78PGOI2Zu4G+f5Gdh9AQ=
     expiration-time: 10
   refresh-token:
-    key: VlwEyVBsYt9V7zq57TejMnVUyZblYcfPQye08f7MgAA9XkHa
+    key: w7H4KoQ5KD9Hy4/wG0qZpspGe5YNNOAj/YyBkouN6Gs=
     expiration-time: 60
 
 management:

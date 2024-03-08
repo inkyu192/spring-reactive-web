@@ -3,12 +3,12 @@ package spring.reactive.web.java.service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.function.TupleUtils;
 import spring.reactive.web.java.config.security.JwtTokenProvider;
 import spring.reactive.web.java.constant.ApiResponseCode;
 import spring.reactive.web.java.domain.Token;
@@ -33,21 +33,20 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(loginRequest.account(), loginRequest.password());
 
         return reactiveAuthenticationManager.authenticate(usernamePasswordAuthenticationToken)
-                .onErrorResume(BadCredentialsException.class, e ->
-                        Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS))
-                )
-                .flatMap(authentication -> {
+                .onErrorResume(authentication -> Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS)))
+                .zipWhen(authentication -> tokenRepository.save(
+                        Token.create(authentication.getName(), jwtTokenProvider.createRefreshToken())
+                ))
+                .map(TupleUtils.function((authentication, token) -> {
                     String accessToken = jwtTokenProvider.createAccessToken(
                             authentication.getName(),
                             authentication.getAuthorities().stream()
                                     .map(GrantedAuthority::getAuthority)
                                     .collect(Collectors.joining(","))
                     );
-                    String refreshToken = jwtTokenProvider.createRefreshToken();
 
-                    return tokenRepository.save(Token.create(authentication.getName(), refreshToken))
-                            .thenReturn(new TokenResponse(accessToken, refreshToken));
-                });
+                    return new TokenResponse(accessToken, token.getRefreshToken());
+                }));
     }
 
     public Mono<TokenResponse> refresh(TokenRequest tokenRequest) {
@@ -63,15 +62,8 @@ public class AuthService {
         String authorities = claims.get("authorities").toString();
 
         return tokenRepository.findById(account)
+                .filter(token -> tokenRequest.refreshToken().equals(token.getRefreshToken()))
                 .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS)))
-                .flatMap(token -> {
-                    String refreshToken = token.getRefreshToken();
-
-                    if (!tokenRequest.refreshToken().equals(refreshToken)) {
-                        return Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS));
-                    }
-
-                    return Mono.just(new TokenResponse(jwtTokenProvider.createAccessToken(account, authorities)));
-                });
+                .map(token -> new TokenResponse(jwtTokenProvider.createAccessToken(account, authorities)));
     }
 }
