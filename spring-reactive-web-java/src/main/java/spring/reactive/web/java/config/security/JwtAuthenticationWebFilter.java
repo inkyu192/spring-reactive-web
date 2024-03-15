@@ -1,6 +1,7 @@
 package spring.reactive.web.java.config.security;
 
 import io.jsonwebtoken.Claims;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,7 +48,7 @@ public class JwtAuthenticationWebFilter extends AuthenticationWebFilter {
 
     public String getAccessToken(ServerHttpRequest request) {
         String accessToken = null;
-        String token = request.getHeaders().getFirst("Authorization");
+        String token = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
         if (StringUtils.hasText(token) && token.startsWith("Bearer")) {
             accessToken = token.replace("Bearer ", "");
