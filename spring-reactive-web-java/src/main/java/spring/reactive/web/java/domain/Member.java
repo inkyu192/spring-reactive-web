@@ -30,10 +30,6 @@ public class Member extends Base implements Persistable<Long> {
         return getCreatedDate() == null;
     }
 
-    public static Member empty() {
-        return new Member();
-    }
-
     public static Member create(
             Long memberId,
             String account,

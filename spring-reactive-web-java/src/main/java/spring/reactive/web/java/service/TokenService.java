@@ -6,11 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+import reactor.function.TupleUtils;
 import spring.reactive.web.java.config.security.JwtTokenProvider;
 import spring.reactive.web.java.constant.ApiResponseCode;
 import spring.reactive.web.java.dto.request.TokenRequest;
 import spring.reactive.web.java.dto.response.TokenResponse;
 import spring.reactive.web.java.exception.CommonException;
+import spring.reactive.web.java.repository.MemberRepository;
 import spring.reactive.web.java.repository.TokenRepository;
 
 @Service
@@ -20,6 +22,7 @@ public class TokenService {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenRepository tokenRepository;
+    private final MemberRepository memberRepository;
 
     public Mono<TokenResponse> reissue(TokenRequest tokenRequest) {
         Claims claims;
@@ -32,12 +35,18 @@ public class TokenService {
 
         jwtTokenProvider.parseRefreshToken(tokenRequest.refreshToken());
 
-        String account = (String) claims.get("account");
-        String authorities = claims.get("authorities").toString();
+        String memberId = String.valueOf(claims.get("memberId"));
 
-        return tokenRepository.findById(account)
+        return tokenRepository.findById(memberId)
                 .filter(token -> tokenRequest.refreshToken().equals(token.getRefreshToken()))
-                .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS)))
-                .map(token -> new TokenResponse(jwtTokenProvider.createAccessToken(account, authorities)));
+                .zipWith(memberRepository.findById(Long.valueOf(memberId)))
+                .map(TupleUtils.function((token, member) -> new TokenResponse(
+                        jwtTokenProvider.createAccessToken(
+                                Long.valueOf(memberId),
+                                member.getRole()
+                        ),
+                        token.getRefreshToken()
+                )))
+                .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS)));
     }
 }

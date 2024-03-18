@@ -3,12 +3,16 @@ package spring.reactive.web.java.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import spring.reactive.web.java.config.security.UserDetailsImpl;
+import spring.reactive.web.java.dto.request.LoginRequest;
 import spring.reactive.web.java.dto.request.MemberSaveRequest;
 import spring.reactive.web.java.dto.request.MemberUpdateRequest;
 import spring.reactive.web.java.dto.response.ApiResponse;
 import spring.reactive.web.java.dto.response.MemberResponse;
+import spring.reactive.web.java.dto.response.TokenResponse;
 import spring.reactive.web.java.service.MemberService;
 
 @RestController
@@ -24,7 +28,12 @@ public class MemberController {
                 .map(ApiResponse::new);
     }
 
-    @GetMapping
+    @PostMapping("login")
+    public Mono<ApiResponse<TokenResponse>> login(@RequestBody LoginRequest loginRequest) {
+        return memberService.login(loginRequest)
+                .map(ApiResponse::new);
+    }
+
     public Mono<ApiResponse<Page<MemberResponse>>> fineMembers(
             Pageable pageable,
             @RequestParam(required = false) String account,
@@ -34,24 +43,24 @@ public class MemberController {
                 .map(ApiResponse::new);
     }
 
-    @GetMapping("{id}")
-    public Mono<ApiResponse<MemberResponse>> findMember(@PathVariable Long id) {
-        return memberService.findMember(id)
+    @GetMapping
+    public Mono<ApiResponse<MemberResponse>> findMember(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return memberService.findMember(userDetails.getMemberId())
                 .map(ApiResponse::new);
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping
     public Mono<ApiResponse<MemberResponse>> updateMember(
-            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestBody MemberUpdateRequest memberUpdateRequest
     ) {
-        return memberService.updateMember(id, memberUpdateRequest)
+        return memberService.updateMember(userDetails.getMemberId(), memberUpdateRequest)
                 .map(ApiResponse::new);
     }
 
-    @DeleteMapping("{id}")
-    public Mono<ApiResponse<Void>> deleteMember(@PathVariable Long id) {
-        return memberService.deleteMember(id)
+    @DeleteMapping
+    public Mono<ApiResponse<Void>> deleteMember(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return memberService.deleteMember(userDetails.getMemberId())
                 .thenReturn(new ApiResponse<>());
     }
 }

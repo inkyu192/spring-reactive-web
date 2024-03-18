@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.ReactiveSetOperations;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 import reactor.function.TupleUtils;
+import reactor.util.function.Tuples;
 import spring.reactive.web.java.domain.Token;
 
 @Repository
@@ -19,11 +20,11 @@ public class TokenRepository {
         ReactiveSetOperations<String, String> reactiveSetOperations = reactiveRedisTemplate.opsForSet();
         ReactiveHashOperations<String, String, String> reactiveHashOperations = reactiveRedisTemplate.opsForHash();
 
-        return Mono.zip(
-                        reactiveSetOperations.add("token", token.getAccount()),
-                        reactiveHashOperations.put("token:" + token.getAccount(), "account", token.getAccount()),
-                        reactiveHashOperations.put("token:" + token.getAccount(), "refreshToken", token.getRefreshToken()),
-                        reactiveHashOperations.put("token:" + token.getAccount(), "_class", token.getClass().getName())
+        return Mono.when(
+                        reactiveSetOperations.add("token", String.valueOf(token.getMemberId())),
+                        reactiveHashOperations.put("token:" + token.getMemberId(), "memberId", String.valueOf(token.getMemberId())),
+                        reactiveHashOperations.put("token:" + token.getMemberId(), "refreshToken", token.getRefreshToken()),
+                        reactiveHashOperations.put("token:" + token.getMemberId(), "_class", token.getClass().getName())
                 )
                 .thenReturn(token);
     }
@@ -31,10 +32,9 @@ public class TokenRepository {
     public Mono<Token> findById(String id) {
         ReactiveHashOperations<String, String, String> reactiveHashOperations = reactiveRedisTemplate.opsForHash();
 
-        return Mono.zip(
-                        reactiveHashOperations.get("token:" + id, "account"),
-                        reactiveHashOperations.get("token:" + id, "refreshToken")
-                )
+        return reactiveHashOperations.get("token:" + id, "memberId")
+                .zipWith(reactiveHashOperations.get("token:" + id, "refreshToken"),
+                        (memberId, refreshToken) -> Tuples.of(Long.valueOf(memberId), refreshToken))
                 .map(TupleUtils.function(Token::create));
     }
 }
