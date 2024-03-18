@@ -35,7 +35,7 @@ public class JwtAuthenticationWebFilter extends AuthenticationWebFilter {
             UserDetails userDetails = new UserDetailsImpl(claims);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     userDetails,
-                    null,
+                    userDetails.getPassword(),
                     userDetails.getAuthorities()
             );
 
