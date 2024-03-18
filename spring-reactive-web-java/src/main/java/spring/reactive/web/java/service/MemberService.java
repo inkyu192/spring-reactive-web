@@ -40,7 +40,7 @@ public class MemberService {
     public Mono<MemberResponse> saveMember(MemberSaveRequest memberSaveRequest) {
         return memberRepository.findByAccount(memberSaveRequest.account())
                 .flatMap(member -> Mono.error(new CommonException(ApiResponseCode.DATA_DUPLICATE)))
-                .switchIfEmpty(Mono.defer(() -> memberRepository.findMaxMemberId().defaultIfEmpty(0L)
+                .switchIfEmpty(Mono.defer(() -> memberRepository.findMemberSeq()
                         .flatMap(id -> memberRepository.save(
                                 Member.create(
                                         id + 1,
