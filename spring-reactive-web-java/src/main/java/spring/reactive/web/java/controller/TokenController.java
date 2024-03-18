@@ -6,21 +6,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-import spring.reactive.web.java.dto.request.LoginRequest;
+import spring.reactive.web.java.dto.request.TokenRequest;
 import spring.reactive.web.java.dto.response.ApiResponse;
 import spring.reactive.web.java.dto.response.TokenResponse;
-import spring.reactive.web.java.service.AuthService;
+import spring.reactive.web.java.service.TokenService;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("token")
 @RequiredArgsConstructor
-public class AuthController {
+public class TokenController {
 
-    private final AuthService authService;
+    private final TokenService tokenService;
 
-    @PostMapping("login")
-    public Mono<ApiResponse<TokenResponse>> login(@RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest)
+    @PostMapping("reissue")
+    public Mono<ApiResponse<TokenResponse>> reissue(@RequestBody TokenRequest tokenRequest) {
+        return tokenService.reissue(tokenRequest)
                 .map(ApiResponse::new);
     }
 }

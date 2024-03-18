@@ -58,4 +58,12 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    public Claims parseRefreshToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(refreshTokenKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
 }
