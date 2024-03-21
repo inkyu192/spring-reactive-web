@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .addFilterAt(jwtAuthenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .addFilterAt(jwtExceptionFilter, SecurityWebFiltersOrder.FIRST)
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
+                        .pathMatchers("/notification/**").permitAll()
                         .pathMatchers("/actuator/**").permitAll()
                         .pathMatchers("/customer/**").permitAll()
                         .pathMatchers("/token/**").permitAll()

@@ -30,7 +30,7 @@ public class MemberCustomRepositoryImpl implements MemberCustomRepository {
     }
 
     @Override
-    public Mono<Page<Member>> findAllWithDatabaseClient(Pageable pageable, String account, String name) {
+    public Mono<Page<Member>> findWithDatabaseClient(Pageable pageable, String account, String name) {
         String countSql = """
                 SELECT COUNT(*) AS cnt
                 FROM member

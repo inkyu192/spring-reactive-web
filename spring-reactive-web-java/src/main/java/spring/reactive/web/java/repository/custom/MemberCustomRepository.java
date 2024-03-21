@@ -7,5 +7,5 @@ import spring.reactive.web.java.domain.Member;
 
 public interface MemberCustomRepository {
 
-    Mono<Page<Member>> findAllWithDatabaseClient(Pageable pageable, String account, String name);
+    Mono<Page<Member>> findWithDatabaseClient(Pageable pageable, String account, String name);
 }

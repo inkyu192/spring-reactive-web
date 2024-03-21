@@ -78,7 +78,7 @@ public class MemberService {
     }
 
     public Mono<Page<MemberResponse>> findMembers(Pageable pageable, String account, String name) {
-        return memberRepository.findAllWithDatabaseClient(pageable, account, name)
+        return memberRepository.findWithDatabaseClient(pageable, account, name)
                 .map(page -> page.map(MemberResponse::new));
     }
 
