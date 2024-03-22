@@ -1,8 +1,6 @@
 package spring.reactive.web.java.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -31,15 +29,6 @@ public class MemberController {
     @PostMapping("login")
     public Mono<ApiResponse<TokenResponse>> login(@RequestBody LoginRequest loginRequest) {
         return memberService.login(loginRequest)
-                .map(ApiResponse::new);
-    }
-
-    public Mono<ApiResponse<Page<MemberResponse>>> fineMembers(
-            Pageable pageable,
-            @RequestParam(required = false) String account,
-            @RequestParam(required = false) String name
-    ) {
-        return memberService.findMembers(pageable, account, name)
                 .map(ApiResponse::new);
     }
 

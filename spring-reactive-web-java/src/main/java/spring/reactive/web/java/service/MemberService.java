@@ -1,8 +1,6 @@
 package spring.reactive.web.java.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -75,11 +73,6 @@ public class MemberService {
                         token.getRefreshToken()
                 )))
                 .onErrorResume(authentication -> Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS)));
-    }
-
-    public Mono<Page<MemberResponse>> findMembers(Pageable pageable, String account, String name) {
-        return memberRepository.findWithDatabaseClient(pageable, account, name)
-                .map(page -> page.map(MemberResponse::new));
     }
 
     public Mono<MemberResponse> findMember(Long id) {

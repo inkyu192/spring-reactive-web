@@ -20,7 +20,6 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-
     @GetMapping
     public Mono<ApiResponse<Page<NotificationResponse>>> findNotifications(
             @PageableDefault(size = 20) Pageable pageable,
