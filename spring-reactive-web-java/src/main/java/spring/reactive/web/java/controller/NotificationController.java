@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+import spring.reactive.web.java.config.security.UserDetailsImpl;
+import spring.reactive.web.java.dto.request.NotificationSaveRequest;
 import spring.reactive.web.java.dto.response.ApiResponse;
 import spring.reactive.web.java.dto.response.NotificationResponse;
 import spring.reactive.web.java.service.NotificationService;
@@ -26,6 +26,15 @@ public class NotificationController {
             @RequestParam(required = false) Long memberId
     ) {
         return notificationService.findNotifications(pageable, memberId)
+                .map(ApiResponse::new);
+    }
+
+    @PostMapping
+    public Mono<ApiResponse<NotificationResponse>> saveNotification(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            NotificationSaveRequest notificationSaveRequest
+    ) {
+        return notificationService.saveNotification(userDetails.getMemberId(), notificationSaveRequest)
                 .map(ApiResponse::new);
     }
 }

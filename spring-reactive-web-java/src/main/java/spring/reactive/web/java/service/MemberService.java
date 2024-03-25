@@ -75,15 +75,15 @@ public class MemberService {
                 .onErrorResume(authentication -> Mono.error(new CommonException(ApiResponseCode.BAD_CREDENTIALS)));
     }
 
-    public Mono<MemberResponse> findMember(Long id) {
-        return memberRepository.findById(id)
+    public Mono<MemberResponse> findMember(Long memberId) {
+        return memberRepository.findById(memberId)
                 .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.DATA_NOT_FOUND)))
                 .map(MemberResponse::new);
     }
 
     @Transactional
-    public Mono<MemberResponse> updateMember(Long id,   MemberUpdateRequest memberUpdateRequest) {
-        return memberRepository.findById(id)
+    public Mono<MemberResponse> updateMember(Long memberId, MemberUpdateRequest memberUpdateRequest) {
+        return memberRepository.findById(memberId)
                 .switchIfEmpty(Mono.error(new CommonException(ApiResponseCode.DATA_NOT_FOUND)))
                 .flatMap(member -> {
                     member.update(
@@ -99,7 +99,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Mono<Void> deleteMember(Long id) {
-        return memberRepository.deleteById(id);
+    public Mono<Void> deleteMember(Long memberId) {
+        return memberRepository.deleteById(memberId);
     }
 }

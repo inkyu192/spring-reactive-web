@@ -27,4 +27,14 @@ public class NotificationReception extends Base implements Persistable<Long> {
     public boolean isNew() {
         return getCreatedDate() == null;
     }
+
+    public static NotificationReception create(Long memberId, Long notificationId) {
+        NotificationReception notificationReception = new NotificationReception();
+
+        notificationReception.notificationId = notificationId;
+        notificationReception.memberId = memberId;
+        notificationReception.isRead = false;
+
+        return notificationReception;
+    }
 }
