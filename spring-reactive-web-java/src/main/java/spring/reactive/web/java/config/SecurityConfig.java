@@ -14,15 +14,11 @@ import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import spring.reactive.web.java.config.security.JwtAuthenticationWebFilter;
 import spring.reactive.web.java.config.security.JwtExceptionFilter;
 import spring.reactive.web.java.config.security.JwtTokenProvider;
 import spring.reactive.web.java.config.security.ReactiveUserDetailsServiceImpl;
 import spring.reactive.web.java.repository.MemberRepository;
-
-import java.util.List;
 
 @Configuration(proxyBeanMethods = false)
 @EnableWebFluxSecurity
