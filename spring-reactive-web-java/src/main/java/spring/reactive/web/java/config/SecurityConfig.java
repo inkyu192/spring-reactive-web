@@ -14,11 +14,15 @@ import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import spring.reactive.web.java.config.security.JwtAuthenticationWebFilter;
 import spring.reactive.web.java.config.security.JwtExceptionFilter;
 import spring.reactive.web.java.config.security.JwtTokenProvider;
 import spring.reactive.web.java.config.security.ReactiveUserDetailsServiceImpl;
 import spring.reactive.web.java.repository.MemberRepository;
+
+import java.util.List;
 
 @Configuration(proxyBeanMethods = false)
 @EnableWebFluxSecurity
@@ -37,9 +41,24 @@ public class SecurityConfig {
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .authenticationManager(reactiveAuthenticationManager)
+//                .cors(corsSpec -> {
+//                    CorsConfiguration corsConfiguration = new CorsConfiguration();
+//
+//                    corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+//                    corsConfiguration.addAllowedHeader("*");
+//                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+//                    corsConfiguration.setAllowCredentials(true);
+//                    corsConfiguration.setMaxAge(3600L);
+//
+//                    UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+//                    urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+//
+//                    corsSpec.configurationSource(urlBasedCorsConfigurationSource);
+//                })
                 .addFilterAt(jwtAuthenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .addFilterAt(jwtExceptionFilter, SecurityWebFiltersOrder.FIRST)
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
+//                        .pathMatchers(HttpMethod.OPTIONS).permitAll()
                         .pathMatchers("/notification/**").permitAll()
                         .pathMatchers("/actuator/**").permitAll()
                         .pathMatchers("/customer/**").permitAll()
