@@ -1,4 +1,4 @@
-package spring.reactive.web.java.config.security;
+package spring.reactive.web.java.filter;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +13,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
+import spring.reactive.web.java.config.security.JwtTokenProvider;
+import spring.reactive.web.java.config.security.UserDetailsImpl;
 
 public class JwtAuthenticationWebFilter extends AuthenticationWebFilter {
 

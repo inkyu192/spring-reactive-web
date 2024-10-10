@@ -1,4 +1,4 @@
-package spring.reactive.web.java.config.security;
+package spring.reactive.web.java.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
