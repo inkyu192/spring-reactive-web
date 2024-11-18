@@ -1,0 +1,6 @@
+= API 문서
+
+== Example API
+
+include::{snippetsDir}/example/http-request.adoc[]
+include::{snippetsDir}/example/http-response.adoc[]

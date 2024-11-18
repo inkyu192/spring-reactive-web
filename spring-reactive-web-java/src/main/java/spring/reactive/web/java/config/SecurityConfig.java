@@ -61,7 +61,7 @@ public class SecurityConfig {
                         .pathMatchers("/token/**").permitAll()
                         .pathMatchers("/member/login").permitAll()
                         .pathMatchers(HttpMethod.POST, "/member").permitAll()
-                        .anyExchange().authenticated()
+                        .anyExchange().permitAll()
                 )
                 .build();
     }
